@@ -233,8 +233,15 @@ public class Main {
                         modifyProfileUser(user);
                         Utils.clickToContinue();
                         break;
-                    default:
+                    case 7:
+                        closeLogin(controller, user);
                         Utils.closeSesion();
+                        break;
+                    default:
+                        System.out.println("""
+                        ┌──. ■ .─────────────────────────────────┐
+                         Error. Debes elegir una opción del menú
+                        └─────────────────────────────────. ■ .──┘""");
                         break;
                 }
             } catch (NumberFormatException e) {
@@ -249,6 +256,10 @@ public class Main {
                         └───────────────────────────────────────────────────────. ■ .──┘""");
             }
         } while (op != 7);
+    }
+
+    private static void closeLogin(AppController controller, Object user) {
+        controller.closeLogin(user);
     }
 
     public static void modifyProfileUser(User user) {
@@ -787,8 +798,12 @@ public class Main {
                         modifyProfileDriver(driver);
                         Utils.clickToContinue();
                         break;
-                    default:
+                    case 7:
+                        closeLogin(controller, driver);
                         Utils.closeSesion();
+                        break;
+                    default:
+                        //TODO: MODIFICAR
                         break;
                 }
             } catch (NumberFormatException e) {
@@ -1078,6 +1093,10 @@ public class Main {
                     case 7:
                         addDriver(controller);
                         Utils.clickToContinue();
+                        break;
+                    case 8:
+                        closeLogin(controller, admin);
+                        Utils.closeSesion();
                         break;
                     default:
                 }

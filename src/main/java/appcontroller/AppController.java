@@ -6,9 +6,11 @@ import models.Admin;
 import models.Driver;
 import models.Shipment;
 import models.User;
+import persistence.PersistenceDisk;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -264,13 +266,23 @@ public class AppController {
 
     public Object login(String email, String pass) {
         for (User u : users) {
-            if (u != null && u.login(email, pass)) return u;
+            if (u != null && u.login(email, pass)) {
+                PersistenceDisk.recordLogin(u.getId(), u.getName(), "usuario", LocalDateTime.now());
+                return u;
+            }
+
         }
         for (Driver d : drivers) {
-            if (d != null && d.login(email, pass)) return d;
+            if (d != null && d.login(email, pass)) {
+                PersistenceDisk.recordLogin(d.getId(), d.getName(), "conductor", LocalDateTime.now());
+                return d;
+            }
         }
         for (Admin a : admins) {
-            if (a != null && a.login(email, pass)) return a;
+            if (a != null && a.login(email, pass)) {
+                PersistenceDisk.recordLogin(a.getId(), a.getName(), "admin", LocalDateTime.now());
+                return a;
+            }
         }
         return null;
     }
@@ -301,20 +313,22 @@ public class AppController {
     /*Metemos información tanto de usuarios, conductores como de envíos*/
     /*We enter information about users, drivers and shipments*/
     public void mock() {
+        Shipment s1 = new Shipment(uniqueShipmentId(), LocalDate.of(2024, 1, 31), LocalDate.of(2024, 1, 31).plusDays(2), null, true, "Málaga 11", 23650, "Torredonjimeno", "En oficina de origen",
+                0, "asdfasdg", 123456, "Marcos");
+        Shipment s2 = new Shipment(uniqueShipmentId(), LocalDate.of(2024, 3, 31), LocalDate.of(2024, 3, 31).plusDays(2), null, true, "Carlos 3", 23650, "Torredonjimeno", "En oficina de origen",
+                0, "jhgfds", 111111, "Lucia");
+        Shipment s3 = new Shipment(uniqueShipmentId(), LocalDate.of(2024, 2, 12), LocalDate.of(2024, 2, 12).plusDays(2), null, true, "Carlos 13", 23650, "Torredonjimeno", "En oficina de origen",
+                0, "kjhgfdsdr", 6543456, "Mamalona");
         users.add(new User(uniqueUserId(), "Carlos", "Ordóñez", "maariiaa1912@gmail.com", "123pipo", 656666005, "Málaga", 11, "Torredonjimeno",
                 "Jaén", 23650));
         users.add((new User(uniqueUserId(), "Marcos", "Pollo", "nardios@hotmail.com", "123pipo", 625178025, "Málaga", 32, "Torredonjimeno", "Jaén", 23650)));
-
         drivers.add(new Driver(uniqueDriverId(), "Carlos", "123pipo", "conductor@gmail.com"));
-        shipmentsToNoRegisterUsers.add(new Shipment(uniqueShipmentId(), LocalDate.of(2024, 1, 31), LocalDate.of(2024, 1, 31).plusDays(2), null, true, "Málaga 11", 23650, "Torredonjimeno", "En oficina de origen",
-                0, "asdfasdg", 123456, "Marcos"));
-        shipmentsToNoRegisterUsers.add(new Shipment(uniqueShipmentId(), LocalDate.of(2024, 3, 31), LocalDate.of(2024, 3, 31).plusDays(2), null, true, "Carlos 3", 23650, "Torredonjimeno", "En oficina de origen",
-                0, "jhgfds", 111111, "Lucia"));
-        shipmentsToNoRegisterUsers.add(new Shipment(uniqueShipmentId(), LocalDate.of(2024, 2, 12), LocalDate.of(2024, 2, 12).plusDays(2), null, true, "Carlos 13", 23650, "Torredonjimeno", "En oficina de origen",
-                0, "kjhgfdsdr", 6543456, "Mamalona"));
-        shipmentsToAssign.add(shipmentsToNoRegisterUsers.getLast());
-        shipmentsToAssign.add(shipmentsToNoRegisterUsers.get(0));
-        shipmentsToAssign.add(shipmentsToNoRegisterUsers.get(1));
+        shipmentsToNoRegisterUsers.add(s1);
+        shipmentsToNoRegisterUsers.add(s2);
+        shipmentsToNoRegisterUsers.add(s3);
+        shipmentsToAssign.add(s1);
+        shipmentsToAssign.add(s2);
+        shipmentsToAssign.add(s3);
     }
 
     /*Método que devuelve un ArrayList del dataclass con información de los paquetes que faltan por asignar
@@ -425,12 +439,14 @@ public class AppController {
     /*Añade un envío si este no está asociado a ningun usuario, se añade a la lista de envios sin usuario del controlador, retorna el envio*/
     /*Adds a shipment if it is not associated with any user, it is added to the list of shipments without a controller user, returns the shipment*/
     public Shipment addShipmentToNoRegisterUser(String status, int idUser, String email, int postalCode, String name, boolean notifications, String address, String city) throws IOException {
-        shipmentsToNoRegisterUsers.add(new Shipment(uniqueShipmentId(), LocalDate.now(), LocalDate.now().plusDays(2), null, notifications, address, postalCode,
-        city, status, calculatedCost(postalCode), email, idUser, name));
+        Shipment shipmentCreate = new Shipment(uniqueShipmentId(), LocalDate.now(), LocalDate.now().plusDays(2), null, notifications, address, postalCode,
+                city, status, calculatedCost(postalCode), email, idUser, name);
+        shipmentsToNoRegisterUsers.add(shipmentCreate);
         User sender = searchUserById(idUser);
-        sender.addShipment(shipmentsToNoRegisterUsers.getLast());
-        addShipmentBestDriver(shipmentsToNoRegisterUsers.getLast());
-        return shipmentsToNoRegisterUsers.getLast();
+        sender.addShipment(shipmentCreate);
+        addShipmentBestDriver(shipmentCreate);
+        PersistenceDisk.recordShipment(-1, idUser, LocalDateTime.now());
+        return shipmentCreate;
     }
 
     /*Calcula el coste a pagar por el remitente sobre el paquete que quiere enviar, si el codigo postal está registrado en algun conductor
@@ -499,12 +515,12 @@ public class AppController {
 
     public Shipment addShipment(int idSender, int idReciever, boolean notifications) throws IOException {
         User reciever = searchUserById(idReciever);
-        User sender = searchUserById(idSender);
-        reciever.addShipment(new Shipment(uniqueShipmentId(), LocalDate.now(), LocalDate.now().plusDays(2), null, notifications,
+        Shipment shipmentCreate = new Shipment(uniqueShipmentId(), LocalDate.now(), LocalDate.now().plusDays(2), null, notifications,
                 reciever.getStreet() + " " + reciever.getNum(), reciever.getPostalCode(), reciever.getCity(),
-                "En oficina de origen", calculatedCost(reciever.getPostalCode()), reciever.getEmail(), idSender, reciever.getName()));
-        addShipmentBestDriver(reciever.getShipments().getLast());
-        return reciever.getShipments().getLast();
+                "En oficina de origen", calculatedCost(reciever.getPostalCode()), reciever.getEmail(), idSender, reciever.getName());
+        reciever.addShipment(shipmentCreate);
+        addShipmentBestDriver(shipmentCreate);
+        return shipmentCreate;
     }
 
     /*Añade el paquete al mejor conductor encontrado según el
@@ -645,5 +661,11 @@ public class AppController {
             return true;
         }
         return false;
+    }
+
+    public void closeLogin(Object user) {
+        if (user instanceof User) PersistenceDisk.closeRegister(((User) user).getId(), ((User) user).getName(), "usuario", LocalDateTime.now());
+        if (user instanceof Driver) PersistenceDisk.closeRegister(((Driver) user).getId(), ((Driver) user).getName(), "conductor", LocalDateTime.now());
+        if (user instanceof Admin) PersistenceDisk.closeRegister(((Admin) user).getId(), ((Admin) user).getName(), "admin", LocalDateTime.now());
     }
 }
