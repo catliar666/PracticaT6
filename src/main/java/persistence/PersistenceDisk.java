@@ -1,5 +1,9 @@
 package persistence;
 
+import models.Admin;
+import models.Driver;
+import models.User;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,7 +12,24 @@ public class PersistenceDisk {
 
         public static final String ROUTE_DATA = "src/main/java/data";
 
-        public static void recordLogin(int id, String nombre, String tipo, LocalDateTime date){
+        public static void recordLogin(Object user, LocalDateTime date){
+                String tipo = "", nombre = "";
+                int id = -1;
+                if (user instanceof User) {
+                        tipo = "usuario";
+                        id = ((User) user).getId();
+                        nombre = ((User) user).getName();
+                }
+                if (user instanceof Driver) {
+                        tipo = "conductor";
+                        id = ((Driver) user).getId();
+                        nombre = ((Driver) user).getName();
+                }
+                if (user instanceof Admin) {
+                        tipo = "administrador";
+                        id = ((Admin) user).getId();
+                        nombre = ((Admin) user).getName();
+                }
                 try {
                         FileWriter fw = new FileWriter(ROUTE_DATA + "/registerLogin/historicLogin.data", true);
                         BufferedWriter bw = new BufferedWriter(fw);
@@ -43,6 +64,41 @@ public class PersistenceDisk {
                                  " \nFecha de la creación: " + date + "\n" +
                                  "==============================================================\n");
                         bw.close();
+                } catch (IOException e) {
+                        throw new RuntimeException(e);
+                }
+        }
+
+        public static void saveUser(User user){
+                FileOutputStream fos = null;
+                try {
+                        fos = new FileOutputStream(ROUTE_DATA + "/users/" + user.getId() + ".dat");
+                        ObjectOutputStream oos = new ObjectOutputStream(fos);
+                        oos.writeObject(user);
+                        oos.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+        }
+
+        public static void saveDriver(Driver driver){
+                FileOutputStream fos = null;
+                try {
+                        fos = new FileOutputStream(ROUTE_DATA + "/drivers/" + driver.getId() + ".dat");
+                        ObjectOutputStream oos = new ObjectOutputStream(fos);
+                        oos.writeObject(driver);
+                        oos.close();
+                } catch (IOException e) {
+                        throw new RuntimeException(e);
+                }
+        }
+        public static void saveAdmin(Admin admin){
+                FileOutputStream fos = null;
+                try {
+                        fos = new FileOutputStream(ROUTE_DATA + "/admins/" + admin.getId() + ".dat");
+                        ObjectOutputStream oos = new ObjectOutputStream(fos);
+                        oos.writeObject(admin);
+                        oos.close();
                 } catch (IOException e) {
                         throw new RuntimeException(e);
                 }

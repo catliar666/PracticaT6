@@ -5,14 +5,16 @@ import comunication.AsignacionCorreo;
 import comunication.AvisoCorreo;
 import comunication.Mensajes;
 import comunication.ValidarCorreo;
-import data.InfoShipmentDataClass;
+import dataclass.InfoShipmentDataClass;
 import models.Admin;
 import models.Driver;
 import models.Shipment;
 import models.User;
+import persistence.PersistenceDisk;
 import utils.Utils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Main {
@@ -30,7 +32,6 @@ public class Main {
                     user = login(appController);
                     break;
                 }
-
                 case 2: {
                     //Register (Registro)
                     user = registro(appController);
@@ -735,6 +736,7 @@ public class Main {
                             userUse.setValidate(false);
                             break;
                     }
+                    if (userUse != null) PersistenceDisk.recordLogin(userUse, LocalDateTime.now());
                     return userUse;
                 } else System.out.println("""
                         ┌──. ■ .─────────────────────────────────────────┐

@@ -1,7 +1,7 @@
 package appcontroller;
 
 import comunication.MensajeTelegram;
-import data.InfoShipmentDataClass;
+import dataclass.InfoShipmentDataClass;
 import models.Admin;
 import models.Driver;
 import models.Shipment;
@@ -267,20 +267,20 @@ public class AppController {
     public Object login(String email, String pass) {
         for (User u : users) {
             if (u != null && u.login(email, pass)) {
-                PersistenceDisk.recordLogin(u.getId(), u.getName(), "usuario", LocalDateTime.now());
+                PersistenceDisk.recordLogin(u, LocalDateTime.now());
                 return u;
             }
 
         }
         for (Driver d : drivers) {
             if (d != null && d.login(email, pass)) {
-                PersistenceDisk.recordLogin(d.getId(), d.getName(), "conductor", LocalDateTime.now());
+                PersistenceDisk.recordLogin(d, LocalDateTime.now());
                 return d;
             }
         }
         for (Admin a : admins) {
             if (a != null && a.login(email, pass)) {
-                PersistenceDisk.recordLogin(a.getId(), a.getName(), "admin", LocalDateTime.now());
+                PersistenceDisk.recordLogin(a, LocalDateTime.now());
                 return a;
             }
         }
@@ -520,6 +520,8 @@ public class AppController {
                 "En oficina de origen", calculatedCost(reciever.getPostalCode()), reciever.getEmail(), idSender, reciever.getName());
         reciever.addShipment(shipmentCreate);
         addShipmentBestDriver(shipmentCreate);
+        //Guardo la informacion del nuevo envio en el archivo log
+        PersistenceDisk.recordShipment(idReciever, idSender, LocalDateTime.now());
         return shipmentCreate;
     }
 
