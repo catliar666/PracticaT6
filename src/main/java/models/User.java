@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
 
     //ATRIBUTOS
     public int cont;
@@ -38,7 +39,7 @@ public class User {
         this.state = state;
         this.postalCode = postalCode;
         notification = true;
-        validate = true;
+        validate = false;
         shipments = new ArrayList<>();
         cont = 0;
 

@@ -9,13 +9,14 @@ import models.User;
 import persistence.PersistenceDisk;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class AppController {
+public class AppController implements Serializable {
 
     private ArrayList<User> users; //Guarda los usuarios clientes
     private ArrayList<Driver> drivers; //Guarda los usuarios conductores
@@ -28,13 +29,23 @@ public class AppController {
     //CONSTRUCTOR
 
     public AppController() {
-        users = new ArrayList<>();
-        drivers = new ArrayList<>();
-        admins = new ArrayList<>();
-        shipmentsToAssign = new ArrayList<>();
-        shipmentsToNoRegisterUsers = new ArrayList<>();
-        /*Añade siempre un admin*/ /*Add always one admin*/
-        admins.add(new Admin("Maria", "123pipo", "admin@gmail.com"));
+        if (PersistenceDisk.existsData()) {
+            users = PersistenceDisk.readUsersDisk();
+            drivers = PersistenceDisk.readDriversDisk();
+            admins = PersistenceDisk.readAdminsDisk();
+            shipmentsToAssign = new ArrayList<>();
+            shipmentsToNoRegisterUsers = new ArrayList<>();
+            /*Añade siempre un admin*/ /*Add always one admin*/
+            admins.add(new Admin("Maria", "123pipo", "admin@gmail.com"));
+        } else {
+            users = new ArrayList<>();
+            drivers = new ArrayList<>();
+            admins = new ArrayList<>();
+            shipmentsToAssign = new ArrayList<>();
+            shipmentsToNoRegisterUsers = new ArrayList<>();
+            /*Añade siempre un admin*/ /*Add always one admin*/
+            admins.add(new Admin("Maria", "123pipo", "admin@gmail.com"));
+        }
     }
 
 
@@ -126,7 +137,9 @@ public class AppController {
     /*Adds a new user to the controller list, if the action has been performed correctly it returns true*/
     public boolean addUser(String name, String surname, String email, int phone, String pass, String street, int num, String city,
                            String state, int postalCode) {
-        return users.add(new User(uniqueUserId(), name, surname, email, pass, phone, street, num, city, state, postalCode));
+        User userAdd = new User(uniqueUserId(), name, surname, email, pass, phone, street, num, city, state, postalCode);
+        PersistenceDisk.saveUser(userAdd);
+        return users.add(userAdd);
     }
 
 
@@ -192,7 +205,15 @@ public class AppController {
     /*Method that creates a new DRIVER object with a unique ID, name, email and password,
     and adds it to the collection that manages the system drivers*/
     public boolean addDriver(String name, String email, String pass) {
-        return drivers.add(new Driver(uniqueDriverId(), name, pass, email));
+        Driver driverAdd = new Driver(uniqueDriverId(), name, pass, email);
+        PersistenceDisk.saveDriver(driverAdd);
+        return drivers.add(driverAdd);
+    }
+
+    public boolean addAdmin(String name, String email, String pass) {
+        Admin adminAdd = new Admin(name, pass, email);
+        PersistenceDisk.saveAdmin(adminAdd);
+        return admins.add(adminAdd);
     }
 
     /*Método que busca un envío en la colección por su ID, si lo encuentra lo retorna*/
@@ -669,5 +690,13 @@ public class AppController {
         if (user instanceof User) PersistenceDisk.closeRegister(((User) user).getId(), ((User) user).getName(), "usuario", LocalDateTime.now());
         if (user instanceof Driver) PersistenceDisk.closeRegister(((Driver) user).getId(), ((Driver) user).getName(), "conductor", LocalDateTime.now());
         if (user instanceof Admin) PersistenceDisk.closeRegister(((Admin) user).getId(), ((Admin) user).getName(), "admin", LocalDateTime.now());
+    }
+
+    public Admin searchAdminByEmail(String emailAdmin) {
+        for (Admin a :
+                admins) {
+            if (a != null && a.getEmail().equals(emailAdmin)) return a;
+        }
+        return null;
     }
 }

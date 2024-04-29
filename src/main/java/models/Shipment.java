@@ -1,9 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Shipment{
+public class Shipment implements Serializable {
 
     //ATRIBUTOS
     private int id; //Código que identifica al paquete

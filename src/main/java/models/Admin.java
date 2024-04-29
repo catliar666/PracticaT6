@@ -1,9 +1,11 @@
 package models;
 
-public class Admin {
+import java.io.Serializable;
+
+public class Admin implements Serializable {
 
     //ATRIBUTOS
-    private int id; //Codigo que crearemos nosotros
+    private static int id; //Codigo que crearemos nosotros
     private String name; //Nombre del administrador
     private String pass; //Contraseña del administrador
     private String email; //Correo electronico
@@ -12,6 +14,7 @@ public class Admin {
     //CONSTRUCTOR
 
     public Admin(String name, String pass, String email) {
+        id++;
         this.name = name;
         this.pass = pass;
         this.email = email;

@@ -1,9 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Driver {
+public class Driver implements Serializable {
     //ATRIBUTOS
     private int id; //Codigo que crearemos nosotros
     private String name; //nombre del conductor

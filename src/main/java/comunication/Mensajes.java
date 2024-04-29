@@ -12,8 +12,8 @@ import static jakarta.mail.Transport.send;
 
 public class Mensajes {
     private static final String host = "smtp.gmail.com";
-    private static final String user = "maria.ordonez.1912@fernando3martos.com";
-    private static final String pass = "uotu urtj rcda bspx";
+    private static final String user = "fernanpaaqsl@gmail.com";
+    private static final String pass = "keld dhmw rgyi wkbx";
 
 
 
