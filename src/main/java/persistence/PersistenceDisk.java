@@ -1,9 +1,12 @@
 package persistence;
 
 import appcontroller.AppController;
+import config.Config;
 import models.Admin;
 import models.Driver;
+import models.Shipment;
 import models.User;
+import utils.Utils;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -12,10 +15,6 @@ import java.util.ArrayList;
 
 public class PersistenceDisk {
 
-    public static final String ROUTE_DATA = "src/main/java/data";
-    private static final String ROUTE_DATA_USERS = "src/main/java/data/users";
-    private static final String ROUTE_DATA_DRIVERS = "src/main/java/data/drivers";
-    private static final String ROUTE_DATA_ADMINS = "src/main/java/data/admins";
 
 
     public static void recordLogin(Object user, LocalDateTime date) {
@@ -37,10 +36,10 @@ public class PersistenceDisk {
             nombre = ((Admin) user).getName();
         }
         try {
-            FileWriter fw = new FileWriter(ROUTE_DATA + "/registerLogin/historicLogin.data", true);
+            FileWriter fw = new FileWriter(Config.getPathRegisterLogin(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("Inicio de sesión: " + id + " \nNombre del usuario: " + nombre
-                     + " \nTipo de usuario:" + tipo + " \nFecha del inicio de sesión: " + date + "\n" +
+                     + " \nTipo de usuario:" + tipo + " \nFecha del inicio de sesión: " + Utils.fechaAString(date) + "\n" +
                      "==============================================================\n");
             bw.close();
         } catch (IOException e) {
@@ -51,10 +50,10 @@ public class PersistenceDisk {
 
     public static void closeRegister(int id, String nombre, String tipo, LocalDateTime date) {
         try {
-            FileWriter fw = new FileWriter(ROUTE_DATA + "/registerLogin/historicLogin.data", true);
+            FileWriter fw = new FileWriter(Config.getPathRegisterLogin(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("Cierre de sesión: " + id + " \nNombre del usuario: " + nombre +
-                     " \nTipo de usuario:" + tipo + " \nFecha del inicio de sesión: " + date + "\n" +
+                     " \nTipo de usuario:" + tipo + " \nFecha del inicio de sesión: " + Utils.fechaAString(date) + "\n" +
                      "==============================================================\n");
             bw.close();
         } catch (IOException e) {
@@ -65,10 +64,10 @@ public class PersistenceDisk {
 
     public static void recordShipment(int idRecieved, int idSender, LocalDateTime date) {
         try {
-            FileWriter fw = new FileWriter(ROUTE_DATA + "/registerLogin/historicLogin.data", true);
+            FileWriter fw = new FileWriter(Config.getPathRegisterLogin(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("Nuevo envío\n" + "Usuario destinatario: " + ((idRecieved == -1) ? "No registrado" : idRecieved) + " \nUsuario remitente: " + idSender +
-                     " \nFecha de la creación: " + date + "\n" +
+                     " \nFecha de la creación: " + Utils.fechaAString(date) + "\n" +
                      "==============================================================\n");
             bw.close();
         } catch (IOException e) {
@@ -79,7 +78,7 @@ public class PersistenceDisk {
     public static void saveUser(User user) {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(ROUTE_DATA + "/users/" + user.getId() + ".dat");
+            fos = new FileOutputStream(Config.getPathUsers() + "/" + user.getId() + ".dat");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(user);
             oos.close();
@@ -91,7 +90,7 @@ public class PersistenceDisk {
     public static void saveDriver(Driver driver) {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(ROUTE_DATA + "/drivers/" + driver.getId() + ".dat");
+            fos = new FileOutputStream(Config.getPathDrivers() + "/" + driver.getId() + ".dat");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(driver);
             oos.close();
@@ -103,9 +102,21 @@ public class PersistenceDisk {
     public static void saveAdmin(Admin admin) {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(ROUTE_DATA + "/admins/" + admin.getId() + ".dat");
+            fos = new FileOutputStream(Config.getPathAdmins() + "/" + admin.getId() + ".dat");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(admin);
+            oos.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void savePackageUnassigned(Shipment s) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(Config.getPathPackage() + "/" + s.getId() + ".dat");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(s);
             oos.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -141,19 +152,19 @@ public class PersistenceDisk {
     }
 
     public static boolean existsData() {
-        File f = new File(ROUTE_DATA);
+        File f = new File(Config.getPathData());
         return f.list().length > 0;
     }
 
     public static ArrayList<User> readUsersDisk() {
-        File f = new File(ROUTE_DATA_USERS);
+        File f = new File(Config.getPathUsers());
         if (f.list().length == 0) return new ArrayList<>();
         ArrayList<User> users = new ArrayList<>();
         String[] ficheros = f.list();
         for (int i = 0; i < ficheros.length; i++) {
             FileInputStream fis;
             try {
-                fis = new FileInputStream(ROUTE_DATA_USERS + "/" + ficheros[i]);
+                fis = new FileInputStream(Config.getPathUsers() + "/" + ficheros[i]);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 User temp = (User) ois.readObject();
                 users.add(temp);
@@ -166,15 +177,36 @@ public class PersistenceDisk {
         return users;
     }
 
+    public static ArrayList<Shipment> readPackageDisk() {
+        File f = new File(Config.getPathPackage());
+        if (f.list().length == 0) return new ArrayList<>();
+        ArrayList<Shipment> shipments = new ArrayList<>();
+        String[] ficheros = f.list();
+        for (int i = 0; i < ficheros.length; i++) {
+            FileInputStream fis;
+            try {
+                fis = new FileInputStream(Config.getPathPackage() + "/" + ficheros[i]);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                Shipment temp = (Shipment) ois.readObject();
+                shipments.add(temp);
+                ois.close();
+            } catch (IOException | ClassNotFoundException e) {
+                return null;
+            }
+
+        }
+        return shipments;
+    }
+
     public static ArrayList<Driver> readDriversDisk() {
-        File f = new File(ROUTE_DATA_DRIVERS);
+        File f = new File(Config.getPathDrivers());
         if (f.list().length == 0) return new ArrayList<>();
         ArrayList<Driver> drivers = new ArrayList<>();
         String[] ficheros = f.list();
         for (int i = 0; i < ficheros.length; i++) {
             FileInputStream fis = null;
             try {
-                fis = new FileInputStream(ROUTE_DATA_DRIVERS + "/" + ficheros[i]);
+                fis = new FileInputStream(Config.getPathDrivers() + "/" + ficheros[i]);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 Driver temp = (Driver) ois.readObject();
                 drivers.add(temp);
@@ -188,14 +220,14 @@ public class PersistenceDisk {
     }
 
     public static ArrayList<Admin> readAdminsDisk() {
-        File f = new File(ROUTE_DATA_DRIVERS);
+        File f = new File(Config.getPathAdmins());
         if (f.list().length == 0) return new ArrayList<>();
         ArrayList<Admin> admins = new ArrayList<>();
         String[] ficheros = f.list();
         for (int i = 0; i < ficheros.length; i++) {
             FileInputStream fis = null;
             try {
-                fis = new FileInputStream(ROUTE_DATA_ADMINS + "/" + ficheros[i]);
+                fis = new FileInputStream(Config.getPathAdmins() + "/" + ficheros[i]);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 Admin temp = (Admin) ois.readObject();
                 admins.add(temp);
@@ -206,6 +238,15 @@ public class PersistenceDisk {
 
         }
         return admins;
+    }
+
+    public static void deletePackage(int idShipment) {
+        File f = new File(Config.getPathPackage());
+        String[] ficheros = f.list();
+        for (int i = 0; i < ficheros.length; i++) {
+            File delete = new File(Config.getPathPackage() + ficheros[i]);
+            if (delete.equals(idShipment + ".dat")) delete.delete();
+        }
     }
 
 //    public static boolean excelDocument(AppController controller) {

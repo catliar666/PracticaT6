@@ -1,12 +1,14 @@
 package models;
 
+import persistence.PersistenceDisk;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class User implements Serializable {
 
     //ATRIBUTOS
-    public int cont;
+    public boolean first_login;
     private int id; //codigo que generaremos
     private String name; //nombre
     private String surname; //Apellidos
@@ -18,6 +20,7 @@ public class User implements Serializable {
     private String city; //ciudad o pueblo
     private String state; //provincia
     private int postalCode; //codigo postal
+    private int token;
     private boolean notification; //Atributo que sirve para saber si el usuario quiere o no notificaciones en el email
     private boolean validate; //indica si la cuenta está validada o no mediante el codigo que se envia por correo
     private ArrayList<Shipment> shipments; //envios que tiene este usuario
@@ -26,7 +29,7 @@ public class User implements Serializable {
 
     public User(int id, String name, String surname, String email, String pass,
                 int phone, String street, int num, String city, String state,
-                int postalCode) {
+                int postalCode, int token) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -38,10 +41,12 @@ public class User implements Serializable {
         this.city = city;
         this.state = state;
         this.postalCode = postalCode;
+        this.token = token;
         notification = true;
         validate = false;
         shipments = new ArrayList<>();
-        cont = 0;
+        first_login = false;
+
 
     }
 
@@ -50,12 +55,13 @@ public class User implements Serializable {
     //GETTERS AND SETTERS
 
 
-    public int getCont() {
-        return cont;
+    public boolean isFirst_login() {
+        return first_login;
     }
 
-    public void setCont(int cont) {
-        this.cont = cont;
+    public void setFirst_login(boolean first_login) {
+        this.first_login = first_login;
+        PersistenceDisk.saveUser(this);
     }
 
     public boolean isValidate() {
@@ -64,6 +70,7 @@ public class User implements Serializable {
 
     public void setValidate(boolean validate) {
         this.validate = validate;
+        PersistenceDisk.saveUser(this);
     }
 
     public int getId() {
@@ -247,8 +254,13 @@ public class User implements Serializable {
         results += street + ", " + num + ", " + postalCode + " " + city + "(" + state + ")";
         return results;
     }
-    public void sumaContLogin(int i) {
-        this.cont += i;
+    public boolean validarToken(int tokenIngresado) {
+        // Verificar si el token ingresado coincide
+        if (tokenIngresado == this.token) {
+            PersistenceDisk.saveUser(this);
+            return true;
+        }
+        return false;
     }
 
     @Override

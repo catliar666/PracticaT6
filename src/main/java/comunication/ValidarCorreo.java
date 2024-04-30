@@ -10,17 +10,13 @@ public class ValidarCorreo {
     }
 
     // Método para enviar el token al correo y almacenarlo
-    public static void enviarToken(String correoTeclado) {
+    public static int enviarToken(String correoTeclado) {
         correo = correoTeclado;
         token = generarToken();
-
         Mensajes.enviarMensaje(correo, "Verifica tu cuenta de FernanPaaq", PlantillaToken.generaPlantillaToken(token));
+        return token;
     }
 
     // Método para validar el token
-    public static boolean validarToken(int tokenIngresado) {
-        // Verificar si el token ingresado coincide
-        return tokenIngresado == token;
-    }
 
 }

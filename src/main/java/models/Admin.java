@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Admin implements Serializable {
 
     //ATRIBUTOS
-    private static int id; //Codigo que crearemos nosotros
+    private static int id = 0; //Codigo que crearemos nosotros
     private String name; //Nombre del administrador
     private String pass; //Contraseña del administrador
     private String email; //Correo electronico

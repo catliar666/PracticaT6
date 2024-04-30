@@ -1,5 +1,8 @@
 package utils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Utils {
@@ -56,5 +59,9 @@ public class Utils {
             System.out.print(". ");
         }
         System.out.println();
+    }
+    public static String fechaAString(LocalDateTime fecha){
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        return fecha.format(f);
     }
 }

@@ -15,6 +15,7 @@ import persistence.PersistenceDisk;
 import utils.Utils;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class Main {
     public static void main(String[] args) {
         AppController appController = new AppController();
         if (args.length == 0) programaPrincipal(appController);
+
         if (args[0].equals("copy")) {
             if (args.length == 2) {
                 copiaSeguridad(appController, args[1]);
@@ -48,9 +50,8 @@ public class Main {
         PersistenceDisk.backup(appController, arg);
     }
 
-    public static void programaPrincipal(AppController appController){
+    public static void programaPrincipal(AppController appController) {
         Object user = null;
-        askMock(appController);
         do {
             switch (startMenu()) {
                 case 1: {
@@ -78,45 +79,6 @@ public class Main {
         } while (true);
     }
 
-    public static void askMock(AppController controller) {
-        String op;
-        System.out.print("""
-                ──. ■ .────────────────────────────────────────────────
-                  ¿Desea que haya información de prueba en el programa?
-                ────────────────────────────────────────────────. ■ .──
-                    █ 1. Si
-                    █ 2. No
-                Elija una opción: """);
-        op = S.nextLine();
-        switch (op) {
-            case "1":
-                controller.mock();
-                System.out.println("La información ha sido añadida, puede continuar");
-                ArrayList<User> resultsUser = controller.getUsers();
-                ArrayList<Driver> resultsDriver = controller.getDrivers();
-                ArrayList<Shipment> resultsShipments = controller.getShipmentsToAssign();
-                for (User u :
-                        resultsUser) {
-                    if (u != null) System.out.println(u.resumeMock());
-                }
-                for (Driver d :
-                        resultsDriver) {
-                    if (d != null) System.out.println(d.resumeMock());
-                }
-                for (Shipment s :
-                        resultsShipments) {
-                    if (s != null) System.out.println(s.resumeMock());
-                }
-                Utils.clickToContinue();
-                break;
-            case "2":
-                System.out.println("No se añadirá información al programa");
-                break;
-            default:
-                controller.mock();
-                System.out.println("Se ha añadido información al programa al no tener una respuesta clara.");
-        }
-    }
 
     public static void searchShipmentNoLogin(AppController controller) {
         int idShipment;
@@ -190,15 +152,16 @@ public class Main {
     public static void userMenu(AppController controller, User user) {
         int op = 0;
         //TODO No entra, preguntar a carlos
-        validateCount(user);
-        if (user.isValidate() || user.getCont() == 0) {
-            user.sumaContLogin(1);
+        if (validateCount(user)) {
+            //if () { TODO probar
+            user.setFirst_login(true);
             do {
 
                 System.out.printf("""
                         ┌──. ■ .─────────────────────────────────────────────────────────────────┐
                         █ Bienvenido %-7s                                                     █
                         █ Tiene %-2d paquetes pendientes de entrega.                               █
+                        █ Último inicio de sesión: %-21s                         █
                         █ ────────────────────────────────────────────────────────────────────── █
                         █ Menú de operaciones:                                                   █
                         █    1. Realizar un envío.                                               █
@@ -209,7 +172,7 @@ public class Main {
                         █    6. Modificar mis datos.                                             █
                         █    7. Cerrar sesión.                                                   █
                         └─────────────────────────────────────────────────────────────────. ■ .──┘
-                        Elija una opción:""", user.getName(), user.numDeliveriesPendingToDeliver());
+                        Elija una opción:""", user.getName(), user.numDeliveriesPendingToDeliver(), ((controller.getLastLogin(user) == null) ? "No hay datos" : controller.getLastLogin(user)));
                 try {
                     op = Integer.parseInt(S.nextLine());
                     switch (op) {
@@ -263,37 +226,42 @@ public class Main {
         }
     }
 
-    private static void validateCount(User user) {
-        if (user.getCont() >= 1){
+    private static boolean validateCount(User user) {
+        if (user.first_login && !user.isValidate()) {
             System.out.println("""
-                        ┌──. ■ .──────────────────────────────────┐
-                         Su cuenta actualmente no ha sido validada
-                        └──────────────────────────────────. ■ .──┘""");
+                    ┌──. ■ .──────────────────────────────────┐
+                     Su cuenta actualmente no ha sido validada
+                    └──────────────────────────────────. ■ .──┘""");
             System.out.print("Por favor, introduzca el código que se le proporcionó por email: ");
             try {
-                if (ValidarCorreo.validarToken(Integer.parseInt(S.nextLine()))) {
+                if (user.validarToken(Integer.parseInt(S.nextLine()))) {
                     System.out.println("""
-                                ┌──. ■ .────────────────────┐
-                                 Su cuenta ha sido validada
-                                └────────────────────. ■ .──┘""");
+                            ┌──. ■ .────────────────────┐
+                             Su cuenta ha sido validada
+                            └────────────────────. ■ .──┘""");
                     user.setValidate(true);
+                    return true;
                 } else {
                     System.out.println("""
                             ┌──. ■ .─────────────────┐
                              El código no es correcto
                             └─────────────────. ■ .──┘""");
-                    user.sumaContLogin(-1);
                     user.setValidate(false);
+                    return false;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("""
-                            ┌──. ■ .───────────────────────┐
-                             Error. El código no es correcto
-                            └───────────────────────. ■ .──┘""");
+                        ┌──. ■ .───────────────────────┐
+                         Error. El código no es correcto
+                        └───────────────────────. ■ .──┘""");
                 user.setValidate(false);
-                user.sumaContLogin(-1);
+                return false;
             }
-        }
+        } else if (!user.isFirst_login() && !user.isValidate()) {
+            return true;
+        } else if (!user.isFirst_login() && user.isValidate()) {
+            return true;
+        } else return user.isValidate() && user.isFirst_login();
     }
 
     private static void closeLogin(AppController controller, Object user) {
@@ -436,9 +404,9 @@ public class Main {
     public static void drawShipmentISent(AppController controller, User user) {
         ArrayList<InfoShipmentDataClass> results = controller.getShipmentFromUser(user.getId());
         if (results.isEmpty()) System.out.printf("""
-                    ┌──. ■ .──────────────────────────┐
-                      Este usuario a enviado %d envíos
-                    └──────────────────────────. ■ .──┘\n""", controller.getNumShipmentsMadeByUser(user.getId()));
+                ┌──. ■ .──────────────────────────┐
+                  Este usuario a enviado %d envíos
+                └──────────────────────────. ■ .──┘\n""", controller.getNumShipmentsMadeByUser(user.getId()));
         else {
             System.out.printf("""
                     ┌──. ■ .──────────────────────────┐
@@ -530,9 +498,9 @@ public class Main {
             ArrayList<InfoShipmentDataClass> shipmentPendings = controller.getShipmentPendingsToUser(user.getId());
             if (!shipmentPendings.isEmpty()) {
                 System.out.println("""
-                    ┌──. ■ .───────────────────────────────────────────────┐
-                     Los envíos se muestran del más reciente al más antiguo
-                    └───────────────────────────────────────────────. ■ .──┘""");
+                        ┌──. ■ .───────────────────────────────────────────────┐
+                         Los envíos se muestran del más reciente al más antiguo
+                        └───────────────────────────────────────────────. ■ .──┘""");
                 System.out.println("""
                         ┌──. ■ .──────────────────────┐
                          Envíos todavía NO entregados
@@ -679,7 +647,7 @@ public class Main {
 
     //Aquí solo se puede registrar un usuario
     public static Object registro(AppController controller) {
-        int phone = 0, num = 0, postalCode = 0;
+        int phone = 0, num = 0, postalCode = 0, token = -1;
         System.out.print("Introduzca su email: ");
         String email = S.nextLine();
         if (controller.searchDriverByEmail(email) != null || controller.searchUserByEmail(email) != null)
@@ -690,7 +658,7 @@ public class Main {
         else {
             try {
                 Utils.checkEmail();
-                ValidarCorreo.enviarToken(email);
+                token = ValidarCorreo.enviarToken(email);
                 System.out.print("\nIntroduzca su clave: ");
                 String pass = S.nextLine();
                 System.out.print("Introduzca su nombre: ");
@@ -698,45 +666,45 @@ public class Main {
                 System.out.print("Introduzca sus apellidos: ");
                 String surname = S.nextLine();
                 do {
-                try {
+                    try {
                         System.out.print("Introduzca su número de telefono: ");
                         phone = Integer.parseInt(S.nextLine());
-                } catch (NumberFormatException e) {
-                    System.out.println("""
-                            ┌──. ■ .─────────────────────────────┐
-                              Error. Debes introducir un número
-                            └─────────────────────────────. ■ .──┘""");
-                }
+                    } catch (NumberFormatException e) {
+                        System.out.println("""
+                                ┌──. ■ .─────────────────────────────┐
+                                  Error. Debes introducir un número
+                                └─────────────────────────────. ■ .──┘""");
+                    }
                 } while (!(phone > 0));
                 System.out.print("Introduzca su calle: ");
                 String street = S.nextLine();
                 System.out.print("Introduzca su ciudad: ");
                 String city = S.nextLine();
                 do {
-                try{
-                    System.out.print("Introduzca su número de portal: ");
-                    num = Integer.parseInt(S.nextLine());
-                } catch (NumberFormatException e) {
-                    System.out.println("""
-                            ┌──. ■ .─────────────────────────────┐
-                              Error. Debes introducir un número
-                            └─────────────────────────────. ■ .──┘""");
-                }
+                    try {
+                        System.out.print("Introduzca su número de portal: ");
+                        num = Integer.parseInt(S.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("""
+                                ┌──. ■ .─────────────────────────────┐
+                                  Error. Debes introducir un número
+                                └─────────────────────────────. ■ .──┘""");
+                    }
                 } while (!(num > 0));
                 System.out.print("Introduzca su provincia: ");
                 String state = S.nextLine();
                 do {
-                try{
-                    System.out.print("Introduzca su codigo postal: ");
-                    postalCode = Integer.parseInt(S.nextLine());
-                } catch (NumberFormatException e) {
-                    System.out.println("""
-                            ┌──. ■ .─────────────────────────────┐
-                              Error. Debes introducir un número
-                            └─────────────────────────────. ■ .──┘""");
-                }
+                    try {
+                        System.out.print("Introduzca su codigo postal: ");
+                        postalCode = Integer.parseInt(S.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("""
+                                ┌──. ■ .─────────────────────────────┐
+                                  Error. Debes introducir un número
+                                └─────────────────────────────. ■ .──┘""");
+                    }
                 } while (!(postalCode > 0));
-                if (controller.addUser(name, surname, email, phone, pass, street, num, city, state, postalCode)) {
+                if (controller.addUser(name, surname, email, phone, pass, street, num, city, state, postalCode, token)) {
                     //buscar aqui si tiene paquetes en su email, asignados.
                     controller.findShipmentCreateUser(email);
                     System.out.println("""
@@ -759,7 +727,7 @@ public class Main {
                     switch (op) {
                         case 1:
                             System.out.print("Introduce el código que se muestra en el email: ");
-                            if (ValidarCorreo.validarToken(Integer.parseInt(S.nextLine()))) {
+                            if (userUse.validarToken(Integer.parseInt(S.nextLine()))) {
                                 System.out.println("""
                                         ┌──. ■ .─────────────────────────┐
                                           Cuenta validada correctamente
@@ -776,10 +744,9 @@ public class Main {
                                       nuevamente
                                     └────────────────────────────────────. ■ .──┘""");
                             System.out.println(" ");
-                            userUse.setValidate(false);
                             break;
                     }
-                    if (userUse != null) PersistenceDisk.recordLogin(userUse, LocalDateTime.now()); //TODO no se si está bien, preguntar y modificar
+                    if (userUse != null) controller.recordLogin(userUse, LocalDateTime.now());
                     return userUse;
                 } else System.out.println("""
                         ┌──. ■ .─────────────────────────────────────────┐
@@ -805,6 +772,7 @@ public class Main {
                     ┌──. ■ .─────────────────────────────────────────────────────────────────┐
                     █ Bienvenido %-7s.                                                    █
                     █ Tiene %-2d paquetes pendientes de entrega.                               █
+                    █ Último inicio de sesión: %-21s                         █
                     █ ────────────────────────────────────────────────────────────────────── █
                     █ Menú de operaciones:                                                   █
                     █    1. Ver la información de los envíos que debo entregar.              █
@@ -815,7 +783,7 @@ public class Main {
                     █    6. Modificar mis datos.                                             █
                     █    7. Cerrar sesión.                                                   █
                     └─────────────────────────────────────────────────────────────────. ■ .──┘
-                    Elija una opción:""", driver.getName(), driver.numShipmentsPendings());
+                    Elija una opción:""", driver.getName(), driver.numShipmentsPendings(), ((controller.getLastLogin(driver) == null) ? "No hay datos" : controller.getLastLogin(driver)));
             try {
                 op = Integer.parseInt(S.nextLine());
                 switch (op) {
@@ -1047,11 +1015,11 @@ public class Main {
                             └─────────────────────────────. ■ .──┘""");
                 }
             }
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println("""
-                            ┌──. ■ .─────────────────────┐
-                              No hay envíos para mostrar
-                            └─────────────────────. ■ .──┘""");
+                    ┌──. ■ .─────────────────────┐
+                      No hay envíos para mostrar
+                    └─────────────────────. ■ .──┘""");
         }
     }
 
@@ -1084,7 +1052,8 @@ public class Main {
         do {
             try {
                 System.out.printf("""
-                                Bienvenido: %s. Usted es administrador
+                                Bienvenido: %s. Usted es administrador.
+                                Último inicio de sesión: %s
                                 ┌──. ■ .─────────────────────────────────────────────────────────────────┐
                                                         Estadísticas de la app
                                 └─────────────────────────────────────────────────────────────────. ■ .──┘
@@ -1110,7 +1079,7 @@ public class Main {
                                 █   11. Realizar copia de seguridad de la aplicación.                    █
                                 █   12. Cerrar sesión.                                                   █
                                 └─────────────────────────────────────────────────────────────────. ■ .──┘
-                                Elija una opción: """, admin.getName(), controller.numUsers(), controller.numDrivers(), controller.numShipmentsPendings(),
+                                Elija una opción: """, admin.getName(), ((controller.getLastLogin(admin) == null) ? "No hay datos" : controller.getLastLogin(admin)), controller.numUsers(), controller.numDrivers(), controller.numShipmentsPendings(),
                         controller.numShipmentsToAssing(), controller.numShipmentsToNoUserRegister(), controller.numDaysToDeliver());
 
                 op = Integer.parseInt(S.nextLine());
@@ -1145,7 +1114,7 @@ public class Main {
                         break;
                     case 8:
                         addAdmin(controller);
-                        Utils.closeSesion();
+                        Utils.clickToContinue();
                         break;
                     case 9:
 
@@ -1165,9 +1134,9 @@ public class Main {
                         break;
                     default:
                         System.out.println("""
-                        ┌──. ■ .─────────────────────────────────────────────────┐
-                          Error. Debes introducir una opción existente en el menú
-                        └─────────────────────────────────────────────────. ■ .──┘""");
+                                ┌──. ■ .─────────────────────────────────────────────────┐
+                                  Error. Debes introducir una opción existente en el menú
+                                └─────────────────────────────────────────────────. ■ .──┘""");
                         break;
                 }
             } catch (NumberFormatException e) {
@@ -1176,7 +1145,7 @@ public class Main {
                           Error. Debes introducir un número
                         └─────────────────────────────. ■ .──┘""");
             }
-        } while (op != 11);
+        } while (op != 12);
     }
 
     private static void listShipmentEmail(AppController controller) {
@@ -1238,32 +1207,32 @@ public class Main {
                                        
                             └──────────────────────────────────────────────────────────────. ■ .──┘
                                 █ Escriba aquí su ruta: """);
-                     ruta = S.nextLine();
+                    ruta = S.nextLine();
                     if (PersistenceDisk.backup(controller, ruta)) System.out.println("""
-                        ┌──. ■ .────────────────────┐
-                          Copia creada correctamente
-                        └────────────────────. ■ .──┘""");
+                            ┌──. ■ .────────────────────┐
+                              Copia creada correctamente
+                            └────────────────────. ■ .──┘""");
                     else System.out.println("""
-                        ┌──. ■ .────────────────────────────────────────────────────┐
-                            Error al crear la copia, compruebe la ruta de guardado
-                        └────────────────────────────────────────────────────. ■ .──┘""");
+                            ┌──. ■ .────────────────────────────────────────────────────┐
+                                Error al crear la copia, compruebe la ruta de guardado
+                            └────────────────────────────────────────────────────. ■ .──┘""");
                     break;
                 default:
                     if (PersistenceDisk.backup(controller, ruta)) System.out.println("""
-                        ┌──. ■ .────────────────────┐
-                          Copia creada correctamente
-                        └────────────────────. ■ .──┘""");
+                            ┌──. ■ .────────────────────┐
+                              Copia creada correctamente
+                            └────────────────────. ■ .──┘""");
                     else System.out.println("""
-                        ┌──. ■ .───────────────────┐
-                           Error al crear la copia
-                        └───────────────────. ■ .──┘""");
+                            ┌──. ■ .───────────────────┐
+                               Error al crear la copia
+                            └───────────────────. ■ .──┘""");
                     break;
             }
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("""
-                        ┌──. ■ .─────────────────────────────┐
-                          Error. Debes introducir un número
-                        └─────────────────────────────. ■ .──┘""");
+                    ┌──. ■ .─────────────────────────────┐
+                      Error. Debes introducir un número
+                    └─────────────────────────────. ■ .──┘""");
         }
 
     }
