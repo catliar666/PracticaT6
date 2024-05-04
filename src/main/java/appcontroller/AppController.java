@@ -1,12 +1,15 @@
 package appcontroller;
 
+import comunication.AsignacionCorreo;
 import comunication.MensajeTelegram;
+import comunication.Mensajes;
 import config.Config;
 import dataclass.InfoShipmentDataClass;
 import models.Admin;
 import models.Driver;
 import models.Shipment;
 import models.User;
+import persistence.PersistenceData;
 import persistence.PersistenceDisk;
 
 import java.io.IOException;
@@ -16,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Properties;
 
 public class AppController implements Serializable {
 
@@ -27,7 +29,6 @@ public class AppController implements Serializable {
     private ArrayList<Shipment> shipmentsToNoRegisterUsers; //Guarda los paquetes que no tienen usuario
 
 
-
     //CONSTRUCTOR
 
     public AppController() {
@@ -35,8 +36,8 @@ public class AppController implements Serializable {
             users = PersistenceDisk.readUsersDisk();
             drivers = PersistenceDisk.readDriversDisk();
             admins = PersistenceDisk.readAdminsDisk();
-            shipmentsToAssign = PersistenceDisk.readPackageDisk();
-            shipmentsToNoRegisterUsers = new ArrayList<>();
+            shipmentsToAssign = PersistenceDisk.readPackageUnassignedDisk();
+            shipmentsToNoRegisterUsers = PersistenceDisk.readPackageNoRegisterUserDisk();
         } else {
             users = new ArrayList<>();
             drivers = new ArrayList<>();
@@ -54,41 +55,26 @@ public class AppController implements Serializable {
         return users;
     }
 
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
 
     public ArrayList<Driver> getDrivers() {
         return drivers;
     }
 
-    public void setDrivers(ArrayList<Driver> drivers) {
-        this.drivers = drivers;
-    }
 
     public ArrayList<Admin> getAdmins() {
         return admins;
     }
 
-    public void setAdmins(ArrayList<Admin> admins) {
-        this.admins = admins;
-    }
 
     public ArrayList<Shipment> getShipmentsToAssign() {
         return shipmentsToAssign;
     }
 
-    public void setShipmentsToAssign(ArrayList<Shipment> shipmentsToAssign) {
-        this.shipmentsToAssign = shipmentsToAssign;
-    }
 
     public ArrayList<Shipment> getShipmentsToNoRegisterUsers() {
         return shipmentsToNoRegisterUsers;
     }
 
-    public void setShipmentsToNoRegisterUsers(ArrayList<Shipment> shipmentsToNoRegisterUsers) {
-        this.shipmentsToNoRegisterUsers = shipmentsToNoRegisterUsers;
-    }
 
     //METODOS
 
@@ -120,14 +106,14 @@ public class AppController implements Serializable {
 
     /*Método que busca un usuario y lo retorna si contiene el envio que le pasan por teclado*/
     /*Method that searches for a user and returns it if it contains the message that is passed through the keyboard*/
-    public User searchUserByIdShipment(int idShipment){
+    public User searchUserByIdShipment(int idShipment) {
         if (users.isEmpty()) return null;
         else {
-            for (User u:
-                 users) {
+            for (User u :
+                    users) {
                 if (u != null && u.containsShipment(idShipment)) return u;
-                }
             }
+        }
         return null;
     }
 
@@ -209,9 +195,29 @@ public class AppController implements Serializable {
     }
 
     public boolean addAdmin(String name, String email, String pass) {
-        Admin adminAdd = new Admin(name, pass, email);
+        Admin adminAdd = new Admin(uniqueIdAdmin(), name, pass, email);
         PersistenceDisk.saveAdmin(adminAdd);
         return admins.add(adminAdd);
+    }
+
+    private int uniqueIdAdmin() {
+        int idUnique;
+        int cont = 0;
+        do {
+            idUnique = cont;
+            cont++;
+        } while (searchAdminId(idUnique) != null);
+        return idUnique;
+    }
+
+    private Admin searchAdminId(int idUnique) {
+        if (!admins.isEmpty()) {
+            for (Admin a :
+                    admins) {
+                if (a != null && a.getId() == idUnique) return a;
+            }
+        }
+        return null;
     }
 
     /*Método que busca un envío en la colección por su ID, si lo encuentra lo retorna*/
@@ -235,6 +241,23 @@ public class AppController implements Serializable {
                 }
             }
         }
+        if (shipmentsToNoRegisterUsers != null) {
+            for (Shipment s :
+                    shipmentsToNoRegisterUsers) {
+                if (s != null && s.getId() == id) return s;
+            }
+        }
+        if (!users.isEmpty()) {
+            for (User u :
+                    users) {
+                if (u != null) {
+                    for (Shipment s :
+                            u.getShipments()) {
+                        if (s != null && s.getId() == id) return s;
+                    }
+                }
+            }
+        }
         return null;
     }
 
@@ -247,15 +270,27 @@ public class AppController implements Serializable {
         InfoShipmentDataClass shipmentNoLogin = null;
         for (Shipment s :
                 shipmentsToNoRegisterUsers) {
-            if (s != null && s.getId() == id)
+            if (s != null && s.getId() == id) {
+                User userSender = searchUserById(s.getIdSender());
                 shipmentNoLogin = new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(), s.getAlternativePostalCode(), s.getStatus(),
-                        s.getIdSender(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity());
+                        userSender.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity());
+            }
+
         }
+        for (Shipment s :
+                shipmentsToAssign) {
+            if (s != null && s.getId() == id) {
+                User userSender = searchUserById(s.getIdSender());
+                shipmentNoLogin = new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(), s.getAlternativePostalCode(), s.getStatus(),
+                        userSender.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity());
+            }
+            }
         for (User u :
                 users) {
             Shipment envio = u.searchDeliveryById(id);
+            User userSender = searchUserById(envio.getIdSender());
             if (u != null && envio != null)
-                shipmentNoLogin = new InfoShipmentDataClass(envio.getId(), envio.getCreateDate(), envio.getExpectDate(), envio.getDeliveryDate(), u.getPostalCode(), envio.getStatus(), envio.getIdSender(), u.getName(), u.getStreet(), u.getCity());
+                shipmentNoLogin = new InfoShipmentDataClass(envio.getId(), envio.getCreateDate(), envio.getExpectDate(), envio.getDeliveryDate(), u.getPostalCode(), envio.getStatus(), userSender.getName(), u.getName(), u.getStreet(), u.getCity());
         }
         return shipmentNoLogin;
     }
@@ -284,24 +319,29 @@ public class AppController implements Serializable {
   corresponding, if it is not found in any of the arrays hosted in the controller it returns null*/
 
     public Object login(String email, String pass) {
+        if (users != null) {
         for (User u : users) {
             if (u != null && u.login(email, pass)) {
                 PersistenceDisk.recordLogin(u, LocalDateTime.now());
                 return u;
             }
-
         }
+        }
+        if (drivers != null) {
         for (Driver d : drivers) {
             if (d != null && d.login(email, pass)) {
                 PersistenceDisk.recordLogin(d, LocalDateTime.now());
                 return d;
             }
         }
+        }
+        if (admins != null) {
         for (Admin a : admins) {
             if (a != null && a.login(email, pass)) {
                 PersistenceDisk.recordLogin(a, LocalDateTime.now());
                 return a;
             }
+        }
         }
         return null;
     }
@@ -329,25 +369,6 @@ public class AppController implements Serializable {
         return null;
     }
 
-    /*Metemos información tanto de usuarios, conductores como de envíos*/
-    /*We enter information about users, drivers and shipments*/
-    public void mock() {
-        /*Admin admin = new Admin("Maria", "123pipo", "admin@gmail.com");
-        admins.add(admin);
-        PersistenceDisk.saveAdmin(admin);
-        User user = new User(uniqueUserId(), "Maria", "Ordóñez", "maria@gmail.com", "123pipo", 656666005, "Málaga", 11,
-                "Torredonjimeno", "Jaén", 23650, 0);
-        users.add(user);
-        PersistenceDisk.saveUser(user);
-        Driver driver = new Driver(uniqueDriverId(), "Miguel", "123pipo", "conductor@gmail.com");
-        drivers.add(driver);
-        PersistenceDisk.saveDriver(driver);*/
-        Shipment shipment = new Shipment(uniqueShipmentId(), LocalDate.now(), LocalDate.now(), LocalDate.now(),
-                true, "Malaga", 23650, "asdf", "Entregado", 3, "123@gmail.com", 6528, "Pepito");
-        shipmentsToAssign.add(shipment);
-        PersistenceDisk.savePackageUnassigned(shipment);
-    }
-
     /*Método que devuelve un ArrayList del dataclass con información de los paquetes que faltan por asignar
      * este método lo utiliza solo el admin del programa para poder asignar paquetes a conductores*/
     /*Method that returns an ArrayList of the dataclass with information about the packages that remain to be assigned
@@ -358,9 +379,11 @@ public class AppController implements Serializable {
         if (!shipmentsToAssign.isEmpty()) {
             for (Shipment s :
                     shipmentsToAssign) {
-                if (s != null)
+                if (s != null) {
+                    User u = searchUserById(s.getIdSender());
                     results.add(new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(), s.getAlternativePostalCode(), s.getStatus(),
-                            s.getIdSender(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                            u.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                }
             }
 
         }
@@ -377,9 +400,27 @@ public class AppController implements Serializable {
         User userFind = searchUserById(idUser);
         for (Shipment s :
                 userFind.getShipments()) {
-            if (s != null)
+            if (s != null && s.getIdSender() != idUser) {
+                User u = searchUserById(s.getIdSender());
                 shipmentUsers.add(new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(), s.getAlternativePostalCode(), s.getStatus(),
-                        s.getIdSender(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                        u.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+            }
+
+        }
+        Collections.sort(shipmentUsers);
+        return shipmentUsers;
+    }
+
+    public ArrayList<InfoShipmentDataClass> getShipmentSendByUser(int idUser) {
+        ArrayList<InfoShipmentDataClass> shipmentUsers = new ArrayList<>();
+        User userFind = searchUserById(idUser);
+        for (Shipment s :
+                userFind.getShipments()) {
+            if (s != null && s.getIdSender() == userFind.getId()) {
+                User u = searchUserById(s.getIdSender());
+                shipmentUsers.add(new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(), s.getAlternativePostalCode(), s.getStatus(),
+                        u.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+            }
         }
         Collections.sort(shipmentUsers);
         return shipmentUsers;
@@ -400,9 +441,12 @@ public class AppController implements Serializable {
             else {
                 for (Shipment s :
                         results) {
-                    if (s != null)
+                    if (s != null) {
+                        User u = searchUserById(s.getIdSender());
                         shipmentsPendings.add(new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(), s.getAlternativePostalCode(),
-                                s.getStatus(), s.getIdSender(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                                s.getStatus(), u.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                    }
+
                 }
             }
         }
@@ -418,12 +462,13 @@ public class AppController implements Serializable {
     public ArrayList<InfoShipmentDataClass> getShipmentsPendingsDriver(int idDriver) {
         ArrayList<InfoShipmentDataClass> results = new ArrayList<>();
         Driver driver = searchDriverById(idDriver);
-        for (Shipment s:
-             driver.getShipments()) {
-            if (s != null && (s.getStatus().equals("En oficina de origen") ||
-                                 s.getStatus().equals("En almacen") || s.getStatus().equals("En reparto")))
+        for (Shipment s :
+                driver.getShipments()) {
+            if (s != null && !s.getStatus().equals("Entregado")) {
+                User u = searchUserById(s.getIdSender());
                 results.add(new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(), s.getAlternativePostalCode(), s.getStatus(),
-                        s.getIdSender(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                        u.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+            }
         }
 
         return results;
@@ -462,8 +507,8 @@ public class AppController implements Serializable {
         shipmentsToNoRegisterUsers.add(shipmentCreate);
         User sender = searchUserById(idUser);
         sender.addShipment(shipmentCreate);
-        addShipmentBestDriver(shipmentCreate);
         PersistenceDisk.recordShipment(-1, idUser, LocalDateTime.now());
+        PersistenceDisk.savePackageNoRegisterUser(shipmentCreate);
         return shipmentCreate;
     }
 
@@ -477,8 +522,8 @@ public class AppController implements Serializable {
         double costTotal = 0;
         if (drivers.isEmpty()) return 0;
         else {
-            for (Driver d:
-                 drivers) {
+            for (Driver d :
+                    drivers) {
                 if (d != null && d.hasPostalCodeZone(postalCode)) costTotal += 3.53;
                 else costTotal += 10.20;
             }
@@ -493,11 +538,29 @@ public class AppController implements Serializable {
         shipmentChange = searchShipmentById(idShipment);
         if (shipmentChange == null) return false;
         else {
+            User user = searchUserByIdShipment(idShipment);
+            Driver driver = searchDriverByIdShipment(idShipment);
+            if (user != null) user.changeDeliveryData(address, postalCode, city, idShipment);
+            if (driver != null) driver.changeDeliveryData(address, postalCode, city, idShipment);
             shipmentChange.setAlternativeAddress(address);
             shipmentChange.setAlternativeCity(city);
             shipmentChange.setAlternativePostalCode(postalCode);
+            PersistenceDisk.recordUpdateShipment(shipmentChange, LocalDateTime.now());
             return true;
         }
+    }
+
+    private Driver searchDriverByIdShipment(int idShipment) {
+        for (Driver d :
+                drivers) {
+            if (d != null) {
+                for (Shipment s :
+                        d.getShipments()) {
+                    if (s != null && s.getId() == idShipment) return d;
+                }
+            }
+        }
+        return null;
     }
 
     /*Obtiene todos los envios que ha entregado el conductor que se indica por teclado*/
@@ -508,9 +571,12 @@ public class AppController implements Serializable {
         if (driverUse != null) {
             for (Shipment s :
                     driverUse.getShipments()) {
-                if (s != null && s.getStatus().equals("Entregado"))
+                if (s != null && s.getStatus().equals("Entregado")) {
+                    User u = searchUserById(s.getIdSender());
                     results.add(new InfoShipmentDataClass(s.getId(), s.getCreateDate(), s.getExpectDate(), s.getDeliveryDate(),
-                            s.getAlternativePostalCode(), s.getStatus(), s.getIdSender(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                            s.getAlternativePostalCode(), s.getStatus(), u.getName(), s.getNameUserNoRegister(), s.getAlternativeAddress(), s.getAlternativeCity()));
+                }
+
             }
         }
         Collections.sort(results);
@@ -524,6 +590,13 @@ public class AppController implements Serializable {
         if (shipmentSelect != null) {
             shipmentSelect.setStatus(newStatus);
             shipmentSelect.setDeliveryDate(LocalDate.now());
+            User user = searchUserByIdShipment(id);
+            Driver driver = searchDriverByIdShipment(id);
+            User userSender = searchUserById(shipmentSelect.getIdSender());
+            if (user != null) user.changeDeliveryStatus(newStatus, id);
+            if (driver != null) driver.changeDeliveryStatus(newStatus, id);
+            if (userSender != null) userSender.changeDeliveryStatus(newStatus, id);
+
         }
     }
 
@@ -531,14 +604,17 @@ public class AppController implements Serializable {
     destinatario existen en la plataforma, para guardarlo dentro de la informacion de cada uno*/
     /*Add a shipment and check if the sender and recipient users exist on the platform, to save it within each one's information*/
 
-    public Shipment addShipment(int idSender, int idReciever, boolean notifications) throws IOException {
+    public Shipment addShipment(int idSender, int idReciever, boolean notifications) {
         User reciever = searchUserById(idReciever);
+        User sender = searchUserById(idSender);
         Shipment shipmentCreate = new Shipment(uniqueShipmentId(), LocalDate.now(), LocalDate.now().plusDays(2), null, notifications,
                 reciever.getStreet() + " " + reciever.getNum(), reciever.getPostalCode(), reciever.getCity(),
                 "En oficina de origen", calculatedCost(reciever.getPostalCode()), reciever.getEmail(), idSender, reciever.getName());
         reciever.addShipment(shipmentCreate);
-        addShipmentBestDriver(shipmentCreate);
+        sender.addShipment(shipmentCreate);
+        //Guardo los cambios del usuario
         PersistenceDisk.saveUser(reciever);
+        PersistenceDisk.saveUser(sender);
         //Guardo la informacion del nuevo envio en el archivo log
         PersistenceDisk.recordShipment(idReciever, idSender, LocalDateTime.now());
         return shipmentCreate;
@@ -549,29 +625,35 @@ public class AppController implements Serializable {
     /*Adds the package to the best driver found according to the postal code they contain,
     if none is found, it is sent to the list of unassigned shipments*/
 
-    public void addShipmentBestDriver(Shipment s) throws IOException {
+    public void addShipmentBestDriver(Shipment s) {
         Driver driverBest = searchBestDriverByPostalCode(s.getAlternativePostalCode());
         if (driverBest == null) {
             shipmentsToAssign.add(s);
+            PersistenceDisk.savePackageUnassigned(s);
         } else {
             driverBest.addShipment(s);
             PersistenceDisk.saveDriver(driverBest);
-            MensajeTelegram.enviaMensajeTelegram(MensajeTelegram.mensajePredeterminado(s.getId(), s.getStatus(), driverBest.getName(), s.getExpectDate()));
+            try {
+                MensajeTelegram.enviaMensajeTelegram(MensajeTelegram.mensajePredeterminado(s.getId(), s.getStatus(), driverBest.getName(), s.getExpectDate()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     /*Añade una zona de entrega al conductor que se elija por teclado*/
     /*Adds a delivery area to the driver chosen by keyboard*/
-    public boolean addZoneToDriver(int idDriver, int newPostalCode){
+    public boolean addZoneToDriver(int idDriver, int newPostalCode) {
         Driver driverFind = searchDriverById(idDriver);
         if (driverFind != null) {
             driverFind.addPostalCodeZone(newPostalCode);
+            PersistenceDisk.saveDriver(driverFind);
             return true;
         }
         return false;
     }
 
-    public boolean setShipmentToDriver(int idShipment, int idDriver){
+    public boolean setShipmentToDriver(int idShipment, int idDriver) {
         Driver driverFind = searchDriverById(idDriver);
         if (driverFind != null) {
             if (!shipmentsToAssign.isEmpty()) {
@@ -586,22 +668,23 @@ public class AppController implements Serializable {
 
     /*Elimina un envio de la lista de envios sin asignar, esto indica que el envio ya ha sido asignado a un conductor*/
     /*Remove a shipment from the list of unassigned shipments, this indicates that the shipment has already been assigned to a driver*/
-    public void deleteShipmentUnassigned(int idShipment){
+    public void deleteShipmentUnassigned(int idShipment) {
         int pos = 0;
-        if (!shipmentsToAssign.isEmpty()){
+        if (!shipmentsToAssign.isEmpty()) {
             for (int i = 0; i < shipmentsToAssign.size(); i++) {
                 if (shipmentsToAssign.get(i).getId() == idShipment) pos = i;
             }
             shipmentsToAssign.remove(pos);
-            PersistenceDisk.deletePackage(idShipment);
+            PersistenceDisk.deletePackageUnassigned(idShipment);
         }
     }
-    public int getNumShipmentsMadeByUser(int idUser){
+
+    public int getNumShipmentsMadeByUser(int idUser) {
         int cont = 0;
         User userFind = searchUserById(idUser);
-        if (userFind != null){
-            for (Shipment s:
-                 userFind.getShipments()) {
+        if (userFind != null) {
+            for (Shipment s :
+                    userFind.getShipments()) {
                 if (s != null && s.getIdSender() == userFind.getId()) cont++;
             }
         }
@@ -610,13 +693,31 @@ public class AppController implements Serializable {
 
     //METODOS AÑADIDOS POR MI
 
-    public void findShipmentCreateUser(String email){
-        User userFind = searchUserByEmail(email);
-        if (userFind != null){
-            for (Shipment s:
-                 shipmentsToNoRegisterUsers) {
-                if (s != null && s.getEmailUserNoRegister().equals(email)) userFind.addShipment(s);
+    public void findShipmentCreateUser(User u) {
+        ArrayList<Integer> idRemove = new ArrayList<>();
+        if (u != null) {
+            for (Shipment s :
+                    shipmentsToNoRegisterUsers) {
+                if (s != null && s.getEmailUserNoRegister().equals(u.getEmail())) {
+                    u.addShipment(s);
+                    idRemove.add(s.getId());
+                }
             }
+        }
+        for (Integer id:
+                idRemove) {
+            deleteShipmentToNoRegisterUsers(id);
+        }
+    }
+
+    private void deleteShipmentToNoRegisterUsers(int id) {
+        for (Shipment s:
+             shipmentsToNoRegisterUsers) {
+            if (s.getId() == id){
+                shipmentsToNoRegisterUsers.remove(s);
+                PersistenceDisk.deletePackageToNoRegisterUser(id);
+                break;
+        }
         }
     }
 
@@ -651,7 +752,7 @@ public class AppController implements Serializable {
             if (u != null) {
                 for (Shipment r :
                         u.getShipments()) {
-                    if (r != null && (r.getStatus().equals("En oficina de origen") ||
+                    if (r != null && r.getIdSender() != u.getId() && (r.getStatus().equals("En oficina de origen") ||
                                       r.getStatus().equals("En almacen") || r.getStatus().equals("En reparto"))) cont++;
                 }
             }
@@ -675,13 +776,19 @@ public class AppController implements Serializable {
         return shipmentsToNoRegisterUsers.size();
     }
 
-    public boolean addShipmentDriver(int idShipment, int idDriver) throws IOException {
+    public boolean addShipmentDriver(int idShipment, int idDriver) {
         Driver d = searchDriverById(idDriver);
         Shipment s = searchShipmentById(idShipment);
         if (d != null && s != null) {
             d.addShipment(s);
             deleteShipmentUnassigned(idShipment);
-            MensajeTelegram.enviaMensajeTelegram(MensajeTelegram.mensajePredeterminado(s.getId(), s.getStatus(), d.getName(), s.getExpectDate()));
+            PersistenceDisk.saveDriver(d);
+            PersistenceDisk.deletePackageUnassigned(idShipment);
+            try {
+                MensajeTelegram.enviaMensajeTelegram(MensajeTelegram.mensajePredeterminado(s.getId(), s.getStatus(), d.getName(), s.getExpectDate()));
+            } catch (IOException e) {
+                return false;
+            }
             return true;
         }
         return false;
@@ -702,6 +809,7 @@ public class AppController implements Serializable {
         }
     }
 
+    /*Busca a un admin según el email de este, si lo encuentra, retorna el objeto de la clase Admin encontrado*/
     public Admin searchAdminByEmail(String emailAdmin) {
         for (Admin a :
                 admins) {
@@ -714,12 +822,140 @@ public class AppController implements Serializable {
         PersistenceDisk.recordLogin(userUse, fecha);
     }
 
+    /*Aqui le pasamos un objeto, miramos dentro qué tipo de objeto es y dependiendo de cual sea guardamos su id en una variable
+    para luego pasarla a un metodo de la clase Config y modificar el fichero properties para guardar la información
+    del ultimo inicio de sesión de los usuarios
+     */
     public String getLastLogin(Object user) {
         String id = "";
         if (user instanceof User) id = String.valueOf(((User) user).getId());
         if (user instanceof Driver) id = String.valueOf(((Driver) user).getId());
         if (user instanceof Admin) id = String.valueOf(((Admin) user).getId());
-        String date = Config.getLastLogin(id);
-        return date;
+        return Config.getLastLogin(id);
+    }
+
+    /* Método que retorna true si el fichero pdf ha sido creado con exito
+    de no ser así retorna false*/
+    public String createPdf(Shipment shipment, User user) {
+        return PersistenceData.recordPdf(shipment, user);
+    }
+
+
+    /*Este método busca en todas las listas de envios, todos los envíos, obviando los repetidos (ya que a la hora de recuperar informacion
+    con los ficheros, la referencia no se ejecuta) una vez que termina retorna un Arraylist con todos los envíos*/
+    private ArrayList<Shipment> allShipments() {
+        ArrayList<Shipment> allShipments = new ArrayList<>();
+
+        // Agregar los envíos de shipmentsToAssign
+        for (Shipment s : shipmentsToAssign) {
+            if (s != null) {
+                allShipments.add(s);
+            }
+        }
+
+        // Agregar los envíos de shipmentsToNoRegisterUsers
+        for (Shipment f : shipmentsToNoRegisterUsers) {
+            boolean found = false;
+            for (Shipment existing : allShipments) {
+                if (existing.getId() == f.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                allShipments.add(f);
+            }
+        }
+
+        // Agregar los envíos de los conductores
+        for (Driver d : drivers) {
+            for (Shipment t : d.getShipments()) {
+                boolean found = false;
+                for (Shipment existing : allShipments) {
+                    if (existing.getId() == t.getId()) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    allShipments.add(t);
+                }
+            }
+        }
+
+        // Agregar los envíos de los usuarios
+        for (User u : users) {
+            for (Shipment r : u.getShipments()) {
+                boolean found = false;
+                for (Shipment existing : allShipments) {
+                    if (existing.getId() == r.getId()) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    allShipments.add(r);
+                }
+            }
+        }
+
+        return allShipments;
+    }
+
+    /*En este método se crea un arraylist y en él se meten todos los envios que no están repetidos
+    * y que se han creado nuevos, revisando todas las listas que contengan pedidos para luego pasar la información a un
+    * metodo dentro de persistencia, este grabará el archivo excel y retornará true si el archivo se ha creado con exito y false si
+    * no ha sido así
+    * Una vez retorne true, se procederá a enviar un correo al administrador principal del programa, pasandole el nombre del archivo
+    * el email del administrador un asunto y un mensaje*/
+    public boolean sendExcel(Admin admin) {
+        ArrayList<Shipment> s = allShipments();
+        if (PersistenceData.recordExcel(s)) {
+            Mensajes.enviarMensaje(admin.getEmail(), "listado de envios", "Este es el listado de los paquetes", "listadoEnvios.xls");
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<String> getInfoProperties() {
+        ArrayList<String> info = Config.getInfo();
+        ArrayList<String> modificado;
+        if (info == null) return null;
+        else {
+            modificado = reemplazarCaracter(info);
+            return modificado;
+        }
+    }
+
+    private ArrayList<String> reemplazarCaracter(ArrayList<String> info) {
+        ArrayList<String> sinIgual = new ArrayList<>();
+        String result;
+        for (String s:
+             info) {
+            if (s.contains("=")) {
+                result = s.replace("=", ": ");
+                sinIgual.add(result);
+            }
+        }
+        return sinIgual;
+    }
+
+    public boolean changeInvitedMode(String respuesta) {
+        if (respuesta.equalsIgnoreCase("s") || respuesta.equalsIgnoreCase("n")) {
+            return Config.changeProperties(respuesta);
+        } else return false;
+    }
+
+    public void sendEmail(Shipment shipment, User user, String nombreArchivo, boolean notification) {
+        if (notification) Mensajes.enviarMensaje(shipment.getEmailUserNoRegister(), "Asignación de envío", AsignacionCorreo.plantillaAsignacion(shipment.getNameUserNoRegister(), shipment.getExpectDate(),
+                shipment.getStatus(), shipment.getAlternativeAddress(), shipment.getAlternativeCity(), user.getName(), shipment.getNameUserNoRegister()), null);
+        Mensajes.enviarMensaje(user.getEmail(), "Creación de envío", AsignacionCorreo.plantillaAsignacion(shipment.getNameUserNoRegister(), shipment.getExpectDate(),
+                shipment.getStatus(), shipment.getAlternativeAddress(), shipment.getAlternativeCity(), user.getName(), shipment.getNameUserNoRegister()), nombreArchivo);
+    }
+
+    public void saveChangeProfile(Object user) {
+        if (user instanceof User) PersistenceDisk.saveUser((User) user);
+        if (user instanceof Driver) PersistenceDisk.saveDriver((Driver) user);
+        if (user instanceof Admin) PersistenceDisk.saveAdmin((Admin) user);
     }
 }

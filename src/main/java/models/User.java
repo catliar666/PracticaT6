@@ -196,7 +196,7 @@ public class User implements Serializable {
         for (Shipment s:
              shipments) {
 
-            if (s != null && s.getIdSender() != this.id && s.getDeliveryDate() == null) shipmentDeliverPending++;
+            if (s != null && s.getIdSender() != this.id && !s.getStatus().equals("Entregado")) shipmentDeliverPending++;
         }
         return shipmentDeliverPending;
     }
@@ -245,6 +245,7 @@ public class User implements Serializable {
     /*This method adds a package to the user, it does not return anything*/
     public void addShipment(Shipment s){
         shipments.add(s);
+        PersistenceDisk.saveUser(this);
     }
 
     /*Este método junta los atributos, street, num, postalcode, city y state para crear un solo string con toda esa informacion*/
@@ -305,4 +306,23 @@ public class User implements Serializable {
     }
 
 
+    public void changeDeliveryStatus(String newStatus, int id) {
+        for (Shipment s:
+             shipments) {
+            if (s.getId() == id) s.setStatus(newStatus);
+        }
+        PersistenceDisk.saveUser(this);
+    }
+
+    public void changeDeliveryData(String address, int postalCode, String city, int idShipment) {
+        for (Shipment s:
+                shipments) {
+            if (s.getId() == idShipment) {
+                s.setAlternativeAddress(address);
+                s.setAlternativePostalCode(postalCode);
+                s.setAlternativeCity(city);
+            }
+        }
+        PersistenceDisk.saveUser(this);
+    }
 }

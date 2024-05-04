@@ -5,7 +5,9 @@ import comunication.AsignacionCorreo;
 import comunication.AvisoCorreo;
 import comunication.Mensajes;
 import comunication.ValidarCorreo;
+import config.Config;
 import dataclass.InfoShipmentDataClass;
+import dataclass.Menus;
 import models.Admin;
 import models.Driver;
 import models.Shipment;
@@ -40,6 +42,8 @@ public class Main {
         PersistenceData.recordUsers(appController.getUsers());
         PersistenceData.recordDrivers(appController.getDrivers());
         PersistenceData.recordAdmins(appController.getAdmins());
+        PersistenceData.recordShipmentToAssing(appController.getShipmentsToAssign());
+        PersistenceData.recordShipmentToNoRegisterUser(appController.getShipmentsToNoRegisterUsers());
     }
 
     private static AppController restoreCopySecurity(String arg) {
@@ -52,31 +56,43 @@ public class Main {
 
     public static void programaPrincipal(AppController appController) {
         Object user = null;
-        do {
-            switch (startMenu()) {
-                case 1: {
-                    //Login (Inicio de sesión)
-                    user = login(appController);
-                    break;
+        if (Config.getUserInvited()) {
+            do {
+                switch (startMenu()) {
+                    case 1:
+                        //search for shipment with reference number (Búsquedad con número de referencia)
+                        searchShipmentNoLogin(appController);
+                        Utils.clickToContinue();
+                        break;
                 }
-                case 2: {
-                    //Register (Registro)
-                    user = registro(appController);
-                    break;
+            } while (true);
+        } else {
+            do {
+                switch (startMenu()) {
+                    case 1: {
+                        //Login (Inicio de sesión)
+                        user = login(appController);
+                        break;
+                    }
+                    case 2: {
+                        //Register (Registro)
+                        user = registro(appController);
+                        break;
+                    }
+                    case 3:
+                        //search for shipment with reference number (Búsquedad con número de referencia)
+                        searchShipmentNoLogin(appController);
+                        Utils.clickToContinue();
+                        break;
                 }
-                case 3:
-                    //search for shipment with reference number (Búsquedad con número de referencia)
-                    searchShipmentNoLogin(appController);
-                    Utils.clickToContinue();
-                    break;
-            }
-            if (user != null) {
-                if (user instanceof User) userMenu(appController, (User) user);
-                if (user instanceof Driver) driverMenu(appController, (Driver) user);
-                if (user instanceof Admin) adminMenu(appController, (Admin) user);
-            }
-            user = null;
-        } while (true);
+                if (user != null) {
+                    if (user instanceof User) userMenu(appController, (User) user);
+                    if (user instanceof Driver) driverMenu(appController, (Driver) user);
+                    if (user instanceof Admin) adminMenu(appController, (Admin) user);
+                }
+                user = null;
+            } while (true);
+        }
     }
 
 
@@ -106,21 +122,8 @@ public class Main {
     public static int startMenu() {
         int op = 0;
         try {
-            System.out.println("""
-                     _____                     _____            \s
-                    |   __|___ ___ ___ ___ ___|  _  |___ ___ ___\s
-                    |   __| -_|  _|   | .'|   |   __| .'| .'| . |
-                    |__|  |___|_| |_|_|__,|_|_|__|  |__,|__,|_  |
-                                                              |_|
-                                                             """);
-            System.out.print("""
-                    ┌──. ■ .────────────────────────────────────────────────┐
-                    █   Menú de inicio                                      █
-                    █       1. Login                                        █
-                    █       2. Registro                                     █
-                    █       3. Sigue un envío con el número de seguimiento  █
-                    └────────────────────────────────────────────────. ■ .──┘
-                    Elija una opción:""");
+            if (Config.getUserInvited()) System.out.println(Menus.startMenuInvited());
+            else System.out.println(Menus.startMenuNotInvited());
             op = Integer.parseInt(S.nextLine());
         } catch (NumberFormatException e) {
             System.out.println("Debes introducir una opción del menú");
@@ -153,7 +156,6 @@ public class Main {
         int op = 0;
         //TODO No entra, preguntar a carlos
         if (validateCount(user)) {
-            //if () { TODO probar
             user.setFirst_login(true);
             do {
 
@@ -197,7 +199,7 @@ public class Main {
                             Utils.clickToContinue();
                             break;
                         case 6:
-                            modifyProfileUser(user);
+                            modifyProfileUser(controller, user);
                             Utils.clickToContinue();
                             break;
                         case 7:
@@ -216,11 +218,6 @@ public class Main {
                             ┌──. ■ .─────────────────────────────┐
                               Error. Debes introducir un número
                             └─────────────────────────────. ■ .──┘""");
-                } catch (IOException e) {
-                    System.out.println("""
-                            ┌──. ■ .───────────────────────────────────────────────────────┐
-                             Ha ocurrido un error al enviar el mensaje de aviso al conductor
-                            └───────────────────────────────────────────────────────. ■ .──┘""");
                 }
             } while (op != 7);
         }
@@ -270,7 +267,7 @@ public class Main {
         if (user instanceof Admin) controller.closeLogin(user);
     }
 
-    public static void modifyProfileUser(User user) {
+    public static void modifyProfileUser(AppController controller, User user) {
         String op;
         do {
             System.out.print("""
@@ -389,6 +386,7 @@ public class Main {
                             └──────────────────────────. ■ .──┘""");
                     break;
                 case "7":
+                    controller.saveChangeProfile(user);
                     Utils.closeSesion();
                     break;
                 default:
@@ -402,7 +400,7 @@ public class Main {
     }
 
     public static void drawShipmentISent(AppController controller, User user) {
-        ArrayList<InfoShipmentDataClass> results = controller.getShipmentFromUser(user.getId());
+        ArrayList<InfoShipmentDataClass> results = controller.getShipmentSendByUser(user.getId());
         if (results.isEmpty()) System.out.printf("""
                 ┌──. ■ .──────────────────────────┐
                   Este usuario a enviado %d envíos
@@ -534,9 +532,9 @@ public class Main {
         }
     }
 
-    public static void makeShipment(AppController controller, User user) throws IOException {
-        int op = 0, postalCode = 0;
-        String name = "", address, email, city;
+    public static void makeShipment(AppController controller, User user) {
+        int op, postalCode;
+        String name, address, email, city, nombreArchivo;
         Shipment shipment;
         boolean notification = true;
         System.out.print("Introduce el email del destinatario: ");
@@ -575,24 +573,19 @@ public class Main {
                     default:
                         System.out.print("""
                                 ┌──. ■ .─────────────────────────────────────┐
-                                   Al destinatario se le ha asignado que 
+                                   Al destinatario se le ha asignado que
                                    SI tendrá actualizaciones sobre su envío
                                 └─────────────────────────────────────. ■ .──┘""");
                         break;
                 }
                 shipment = controller.addShipmentToNoRegisterUser("En oficina de origen", user.getId(), email, postalCode,
                         name, notification, address, city);
-                User userSender = controller.searchUserById(shipment.getIdSender());
-                String nameSender = "";
-                if (userSender != null) {
-                    nameSender = userSender.getName();
-                }
-                if (notification)
-                    Mensajes.enviarMensaje(shipment.getEmailUserNoRegister(), "Asignación de envío", AsignacionCorreo.plantillaAsignacion(shipment.getNameUserNoRegister(), shipment.getExpectDate(),
-                            shipment.getStatus(), shipment.getAlternativeAddress(), shipment.getAlternativeCity(), nameSender, shipment.getNameUserNoRegister()));
+                controller.addShipmentBestDriver(shipment);
+                nombreArchivo = controller.createPdf(shipment, user);
+                controller.sendEmail(shipment, user, nombreArchivo, notification);
                 System.out.print("""
                                          ┌──. ■ .──────────────────────┐
-                                             Información del envío 
+                                             Información del envío
                                          └──────────────────────. ■ .──┘\n""" + shipment.resume() + "\n");
                 System.out.println("""
                         ┌──. ■ .─────────────────────────────┐
@@ -603,6 +596,11 @@ public class Main {
                         ┌──. ■ .─────────────────────────────┐
                           Error. Debes introducir un número
                         └─────────────────────────────. ■ .──┘""");
+            } catch (IOException e) {
+                System.out.println("""
+                        ┌──. ■ .─────────────────────────────────────────┐
+                         Error. No se ha podido enviar el correo de aviso
+                        └─────────────────────────────────────────. ■ .──┘""");
             }
         } else {
             System.out.print("""
@@ -618,23 +616,19 @@ public class Main {
                 case "2" -> notification = false;
                 default -> System.out.print("""
                         ┌──. ■ .─────────────────────────────────────┐
-                           Al destinatario se le ha asignado que 
+                           Al destinatario se le ha asignado que
                            SI tendrá actualizaciones sobre su envío
                         └─────────────────────────────────────. ■ .──┘""");
             }
             shipment = controller.addShipment(user.getId(), userFind.getId(), notification);
-            User userSender = controller.searchUserById(shipment.getIdSender());
-            String nameSender = "";
-            if (userSender != null) {
-                nameSender = userSender.getName();
-            }
-            if (notification)
-                Mensajes.enviarMensaje(shipment.getEmailUserNoRegister(), "Asignación de envío", AsignacionCorreo.plantillaAsignacion(userFind.getName(), shipment.getExpectDate(),
-                        shipment.getStatus(), shipment.getAlternativeAddress(), shipment.getAlternativeCity(), nameSender, shipment.getNameUserNoRegister()));
+            Driver driverFind = controller.searchBestDriverByPostalCode(shipment.getAlternativePostalCode());
+            if (driverFind != null) controller.addShipmentBestDriver(shipment);
+            nombreArchivo = controller.createPdf(shipment, user);
+            controller.sendEmail(shipment, user, nombreArchivo, notification);
 
             System.out.print("""
                                      ┌──. ■ .──────────────────────┐
-                                         Información del envío 
+                                         Información del envío
                                      └──────────────────────. ■ .──┘\n""" + shipment.resume() + "\n");
             System.out.println("""
                     ┌──. ■ .─────────────────────────────┐
@@ -705,13 +699,14 @@ public class Main {
                     }
                 } while (!(postalCode > 0));
                 if (controller.addUser(name, surname, email, phone, pass, street, num, city, state, postalCode, token)) {
-                    //buscar aqui si tiene paquetes en su email, asignados.
-                    controller.findShipmentCreateUser(email);
+
                     System.out.println("""
                             ┌──. ■ .───────────────────────┐
                               Usuario registrado con éxito
                             └───────────────────────. ■ .──┘""");
                     User userUse = controller.searchUserByEmail(email);
+                    //buscar aqui si tiene paquetes en su email, asignados.
+                    controller.findShipmentCreateUser(userUse);
                     System.out.print("""
                             ┌──. ■ .──────────────────────────────────────────────────┐
                              Le hemos enviado un email con un código de confirmación.
@@ -808,7 +803,7 @@ public class Main {
                         Utils.clickToContinue();
                         break;
                     case 6:
-                        modifyProfileDriver(driver);
+                        modifyProfileDriver(controller, driver);
                         Utils.clickToContinue();
                         break;
                     case 7:
@@ -828,7 +823,7 @@ public class Main {
         } while (op != 7);
     }
 
-    public static void modifyProfileDriver(Driver driver) {
+    public static void modifyProfileDriver(AppController controller, Driver driver) {
         int op = 0;
         do {
             System.out.print("""
@@ -879,6 +874,9 @@ public class Main {
                                 ┌──. ■ .────────────────────┐
                                   Error. Vuelve a intentarlo
                                 └────────────────────. ■ .──┘""");
+                        break;
+                    case 4:
+                        controller.saveChangeProfile(driver);
                         break;
                     default:
                         break;
@@ -963,7 +961,7 @@ public class Main {
                            ¿Qué envío deseas actualizar?
                         └──────────────────────────. ■ .──┘""");
                 for (int i = (shipmentsDriver.size() - 1); i >= 0; i--) {
-                    if (shipmentsDriver.get(i) != null) {
+                    if (shipmentsDriver.get(i) != null && !shipmentsDriver.get(i).getStatus().equals("Entregado")) {
                         cont++;
                         System.out.println("""
                                 ┌──. ■ .───────────────────────────────────────────────┐
@@ -1003,10 +1001,10 @@ public class Main {
                                   Paquete actualizado con éxito
                                 └─────────────────────────. ■ .──┘""");
                     }
-                    User userFind = controller.searchUserByIdShipment(shipmentFind.getId());
+                    User userFind = controller.searchUserById(shipmentFind.getIdSender());
                     if (userFind != null && userFind.isNotification()) {
                         Mensajes.enviarMensaje(userFind.getEmail(), "Actualización del envío", AvisoCorreo.generaPlantillaAviso(userFind.getName(),
-                                shipmentFind.getId(), shipmentFind.getExpectDate(), shipmentFind.getStatus(), shipmentFind.getAlternativeAddress(), shipmentFind.getAlternativeCity()));
+                                shipmentFind.getId(), shipmentFind.getExpectDate(), shipmentFind.getStatus(), shipmentFind.getAlternativeAddress(), shipmentFind.getAlternativeCity()), null);
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("""
@@ -1105,7 +1103,7 @@ public class Main {
                         Utils.clickToContinue();
                         break;
                     case 6:
-                        modifyProfileAdmin(admin);
+                        modifyProfileAdmin(controller, admin);
                         Utils.clickToContinue();
                         break;
                     case 7:
@@ -1117,11 +1115,11 @@ public class Main {
                         Utils.clickToContinue();
                         break;
                     case 9:
-
-                        Utils.closeSesion();
+                        showConfigProgram(controller);
+                        Utils.clickToContinue();
                         break;
                     case 10:
-                        listShipmentEmail(controller);
+                        listShipmentEmail(controller, admin);
                         Utils.clickToContinue();
                         break;
                     case 11:
@@ -1148,9 +1146,74 @@ public class Main {
         } while (op != 12);
     }
 
-    private static void listShipmentEmail(AppController controller) {
-        /*if (PersistenceDisk.excelDocument(controller)) System.out.println("listado enviado correctamente");
-        else System.out.println("Error al enviar el listado");*/
+    private static void showConfigProgram(AppController controller) {
+        String respuesta;
+        System.out.println("""
+                ┌──. ■ .─────────────────────────────────────────────────────────────────┐
+                                  Configuración de FernanPaaq App
+                └─────────────────────────────────────────────────────────────────. ■ .──┘
+                """);
+        ArrayList<String> info = controller.getInfoProperties();
+        if (info != null) {
+            for (String s :
+                    info) {
+                System.out.println("█ " + s);
+            }
+            System.out.println("───────────────────────────────────────────────────────────────────────────");
+            System.out.print("""
+                    ┌──. ■ .─────────────────────────────────────────────────────────────────┐
+                       SI DESEA CAMBIAR EL PROGRAMA A \"MODO INVITADO\" TIENE DOS OPCIONES:
+                    └─────────────────────────────────────────────────────────────────. ■ .──┘
+                       █ 1. Modificar el fichero properties en la ruta  
+                            src/main/java/config/config.properties
+                       █ 2. Modificar desde aquí el fichero
+                       █ 3. Salir.
+                       Elige una opción: """);
+            int op = Integer.parseInt(S.nextLine());
+            switch (op) {
+                case 1:
+                    System.out.print("""
+                            ┌──. ■ .───────────────────────────────────────────┐
+                              Apague el programa y dirijase a la ruta indicada
+                            └───────────────────────────────────────────. ■ .──┘
+                            """);
+                    break;
+                case 2:
+                    do {
+                        System.out.print("""
+                            ┌──. ■ .───────────────────────────────────────────┐
+                             Si desea activar el \"MODO INVITADO\" pulse \"s\",
+                             en cambio, si desea desactivarlo pulse \"n\"
+                            └───────────────────────────────────────────. ■ .──┘
+                            Escriba su respuesta:""");
+                        respuesta = S.nextLine();
+                    } while (!respuesta.equalsIgnoreCase("s") && !respuesta.equalsIgnoreCase("n"));
+                    if (controller.changeInvitedMode(respuesta)) {
+                        System.out.println("""
+                            ┌──. ■ .─────────────────────────┐
+                             Modo invitado cambiado con éxito
+                            └─────────────────────────. ■ .──┘""");
+                        System.out.println("""
+                            ┌──. ■ .───────────────────────────────────────────────────────┐
+                             Una vez modificado, para cambiar el modo deberá dirigirse a la
+                                   ruta del archivo para cambiar nuevamente el modo
+                            └───────────────────────────────────────────────────────. ■ .──┘""");
+                    }
+                    else System.out.println("""
+                            ┌──. ■ .─────────────────────────┐
+                                Error al realizar el cambio
+                            └─────────────────────────. ■ .──┘""");
+                    break;
+                case 3:
+                    System.out.println("No se ha activado el modo invitado");
+                    break;
+            }
+        } else System.out.println("█ NO HAY INFORMACIÓN PARA MOSTRAR █");
+    }
+
+    private static void listShipmentEmail(AppController controller, Admin admin) {
+        if (controller.sendExcel(admin)) System.out.println("El listado ha sido enviado con éxito");
+        else System.out.println("Fallo al enviar el listado");
     }
 
     private static void addAdmin(AppController controller) {
@@ -1237,7 +1300,7 @@ public class Main {
 
     }
 
-    public static void modifyProfileAdmin(Admin admin) {
+    public static void modifyProfileAdmin(AppController controller, Admin admin) {
         int op = 0;
         do {
             System.out.print("""
@@ -1288,6 +1351,10 @@ public class Main {
                                 ┌──. ■ .────────────────────┐
                                   Error. Vuelve a intentarlo
                                 └────────────────────. ■ .──┘""");
+                        break;
+                    case 4:
+                        controller.saveChangeProfile(admin);
+                        Utils.closeSesion();
                         break;
                     default:
                         break;
@@ -1471,8 +1538,6 @@ public class Main {
                         ┌──. ■ .─────────────────────────────┐
                           Error. Debes introducir un número
                         └─────────────────────────────. ■ .──┘""");
-            } catch (IOException e) {
-                System.out.println("Ha ocurrido un error");
             }
         }
 

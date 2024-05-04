@@ -64,4 +64,10 @@ public class Utils {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return fecha.format(f);
     }
+
+    public static String fechaAString(LocalDate fecha){
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if (fecha != null) return fecha.format(f);
+        return "No hay datos disponibles";
+    }
 }

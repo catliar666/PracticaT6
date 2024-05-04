@@ -10,7 +10,7 @@ public class InfoShipmentDataClass implements Comparable<InfoShipmentDataClass> 
     private LocalDate deliveryDate; //Fecha de envio
     private int postalCode; //Codigo postal de la ciudad a la que va a ser enviado
     private String status; //Estado del paquete, si esta en reparto, entregado, en almacen, en oficina
-    private int sender; //Remitente
+    private String sender; //Remitente
     private String receiver; //Persona que recibe el paquete
     private String address; //Direccion de envio
     private String city; //Ciudad a la que va dirigido el paquete
@@ -19,7 +19,7 @@ public class InfoShipmentDataClass implements Comparable<InfoShipmentDataClass> 
     //CONSTRUCTOR
 
     public InfoShipmentDataClass(int id, LocalDate createDate, LocalDate expectDate, LocalDate deliveryDate,
-                                 int postalCode, String status, int sender, String receiver, String address, String city) {
+                                 int postalCode, String status, String sender, String receiver, String address, String city) {
         this.id = id;
         this.createDate = createDate;
         this.expectDate = expectDate;
@@ -83,11 +83,11 @@ public class InfoShipmentDataClass implements Comparable<InfoShipmentDataClass> 
         this.status = status;
     }
 
-    public int getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(int sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
@@ -179,23 +179,28 @@ public class InfoShipmentDataClass implements Comparable<InfoShipmentDataClass> 
                 "█    Fecha de expedición: %s\n" +
                 "█    Fecha aproximada de entrega: %s\n" +
                 "█    Estado actual del envío: %s\n" +
+                "█    Dirección de envío: %s, %s, %d\n" +
                 "█    Remitente: %s\n" +
                 "█    Destinatario: %s\n" +
                 "─────────────────────────────────────────────. ■ .──", id, dateCreate,
-                dateExpect, status, sender, receiver);
+                dateExpect, status, address, city, postalCode, sender, receiver);
 
     }
 
     public String forSender() {
         String dateCreate = createDate.format(formatter);
+        String dateExpect = expectDate.format(formatter);
         return String.format(
                 "┌──. ■ .──────────────────────────┐\n" +
                 "          Envío nº %d\n" +
                 "└──────────────────────────. ■ .──┘\n" +
                 "█    Fecha de expedición: %s\n" +
+                "█    Fecha aproximada de entrega: %s\n" +
                 "█    Estado actual del envío: %s\n" +
+                "█    Dirección de envío: %s, %s, %d\n" +
+                "█    Remitente: %s\n" +
                 "█    Destinatario: %s\n" +
-                "─────────────────────────────────────────────. ■ .──", id, dateCreate, status, receiver);
+                "─────────────────────────────────────────────. ■ .──", id, dateCreate, dateExpect, status, address, city, postalCode, sender, receiver);
     }
 
     public String forDriverFinished() {

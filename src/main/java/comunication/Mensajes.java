@@ -1,11 +1,14 @@
 package comunication;
 
-import jakarta.mail.Message;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
+import config.Config;
+import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import static jakarta.mail.Transport.send;
@@ -18,7 +21,7 @@ public class Mensajes {
 
 
 
-    public static boolean enviarMensaje(String destino, String asunto, String mensaje){
+    public static boolean enviarMensaje(String destino, String asunto, String mensaje, String archivoAdjunto){
         // Creamos nuestra variable de propiedades con los datos de nuestro servidor de correo
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -50,15 +53,43 @@ public class Mensajes {
 
             //Añadimos el contenido del mensaje
             /*message.setText(mensaje);*/ //Para enviar texto plano
-            message.setContent(mensaje, "text/html; charset=utf-8");
+            MimeBodyPart textoPart = new MimeBodyPart();
+            textoPart.setContent(mensaje, "text/html; charset=utf-8");
 
-            //Intentamos mandar el mensaje
-            send(message);
+            // Combinamos las partes del mensaje
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(textoPart);
+
+            // Si se proporciona una ruta de archivo, adjuntamos el archivo al mensaje
+            if (archivoAdjunto != null && !archivoAdjunto.isEmpty()) {
+                MimeBodyPart adjuntoPart = new MimeBodyPart();
+                adjuntoPart.attachFile(new File(Config.getPathFile() + "/" + archivoAdjunto));
+                multipart.addBodyPart(adjuntoPart);
+            }
+
+            // Establecemos el contenido del mensaje como la combinación de texto y archivo (si se proporciona)
+            message.setContent(multipart);
+
+            // Enviamos el mensaje
+            Transport.send(message);
+
 
         } catch (Exception e){ //Si entra aquí hemos tenido fallo
             throw new RuntimeException(e);
         }
 
         return true;
+    }
+
+    private static void adjuntarArchivo(Message message, String archivoAdjunto) {
+        MimeBodyPart adjunto = new MimeBodyPart();
+        try {
+            adjunto.attachFile(new File(Config.getPathFile() + "/" + archivoAdjunto));
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(adjunto);
+            message.setContent(multipart);
+        } catch (IOException | MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

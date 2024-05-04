@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Admin implements Serializable {
 
     //ATRIBUTOS
-    private static int id = 0; //Codigo que crearemos nosotros
+    private int id; //Codigo que crearemos nosotros
     private String name; //Nombre del administrador
     private String pass; //Contraseña del administrador
     private String email; //Correo electronico
@@ -13,8 +13,8 @@ public class Admin implements Serializable {
 
     //CONSTRUCTOR
 
-    public Admin(String name, String pass, String email) {
-        id++;
+    public Admin(int id, String name, String pass, String email) {
+        this.id = id;
         this.name = name;
         this.pass = pass;
         this.email = email;

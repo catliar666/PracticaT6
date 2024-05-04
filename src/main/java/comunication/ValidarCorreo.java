@@ -13,7 +13,7 @@ public class ValidarCorreo {
     public static int enviarToken(String correoTeclado) {
         correo = correoTeclado;
         token = generarToken();
-        Mensajes.enviarMensaje(correo, "Verifica tu cuenta de FernanPaaq", PlantillaToken.generaPlantillaToken(token));
+        Mensajes.enviarMensaje(correo, "Verifica tu cuenta de FernanPaaq", PlantillaToken.generaPlantillaToken(token), null);
         return token;
     }
 

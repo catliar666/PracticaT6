@@ -1,7 +1,10 @@
 package models;
 
+import persistence.PersistenceDisk;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Driver implements Serializable {
@@ -45,10 +48,6 @@ public class Driver implements Serializable {
         this.name = name;
     }
 
-    public String getPass() {
-        return pass;
-    }
-
     public void setPass(String pass) {
         this.pass = pass;
     }
@@ -61,35 +60,25 @@ public class Driver implements Serializable {
         this.email = email;
     }
 
-    public ArrayList<Integer> getDeliveryZones() {
-        return deliveryZones;
-    }
-
-    public void setDeliveryZones(ArrayList<Integer> deliveryZones) {
-        this.deliveryZones = deliveryZones;
-    }
 
     public ArrayList<Shipment> getShipments() {
         return shipments;
     }
 
-    public void setShipments(ArrayList<Shipment> shipments) {
-        this.shipments = shipments;
-    }
 
     //MÉTODOS
 
     //Metodo que comprueba si el email y la contraseña introducido por el usuario coincide con uno ya existente o no
     //Devuelve true si lo encuentra y false si no coincide con ninguno
-    public boolean login(String email, String pass){
+    public boolean login(String email, String pass) {
         return this.email.equals(email) && this.pass.equals(pass);
     }
 
-    public Shipment searchShipmentById(int idShipment){
+    public Shipment searchShipmentById(int idShipment) {
         if (shipments == null) return null;
         else {
-            for (Shipment s:
-                 shipments) {
+            for (Shipment s :
+                    shipments) {
                 if (s != null && s.getId() == idShipment) return s;
             }
         }
@@ -100,26 +89,30 @@ public class Driver implements Serializable {
     por teclado coincide con algún codigo postal de la lista del conductor*/
     /*Add a shipment, first checking if the postal code entered
      by keyboard matches any zip code on the driver's list*/
-    public void addShipment(Shipment s, int postalCode){
-        if (deliveryZones != null){
-            for (Integer d:
-                 deliveryZones) {
-                if (d != null && d == postalCode) shipments.add(s);
+    public void addShipment(Shipment s, int postalCode) {
+        if (deliveryZones != null) {
+            for (Integer d :
+                    deliveryZones) {
+                if (d != null && d == postalCode) {
+                    shipments.add(s);
+                    PersistenceDisk.saveDriver(this);
+                }
             }
         }
     }
 
     /*Añade un envío a la lista de envios del conductor, no comprueba nada, no devuelve nada*/
     /*Adds a shipment to the driver's shipment list, checks nothing, returns nothing*/
-    public void addShipment(Shipment s){
+    public void addShipment(Shipment s) {
         shipments.add(s);
+        PersistenceDisk.saveDriver(this);
     }
 
     /*Comprueba si el codigo postal introducido por teclado ya existe en la
     lista de las zonas de entrega del conductor, si lo encuentra devuelve true*/
     /*Checks if the zip code entered by keyboard already exists in the
      list of the driver's delivery zones, if found it returns true*/
-    public boolean hasPostalCodeZone(int postalCode){
+    public boolean hasPostalCodeZone(int postalCode) {
         if (!deliveryZones.isEmpty()) {
             for (Integer c :
                     deliveryZones) {
@@ -135,10 +128,9 @@ public class Driver implements Serializable {
         int cont = 0;
         if (shipments == null) return cont;
         else {
-            for (Shipment s:
-                 shipments) {
-                if (s != null && (s.getStatus().equals("En almacen") ||
-                                  s.getStatus().equals("En oficina de origen") || s.getStatus().equals("En reparto"))) cont++;
+            for (Shipment s :
+                    shipments) {
+                if (s != null && !s.getStatus().equals("Entregado")) cont++;
             }
         }
         return cont;
@@ -146,33 +138,38 @@ public class Driver implements Serializable {
 
     /*Añade una zona de entrega según el codigo postal introducido por teclado*/
     /*Adds a delivery area according to the postal code entered by keyboard*/
-    public void addPostalCodeZone(int newPostalCode){
+    public void addPostalCodeZone(int newPostalCode) {
         deliveryZones.add(newPostalCode);
+        PersistenceDisk.saveDriver(this);
     }
 
     /*Actualiza el estado del envio seleccionado, el estado se pasa por teclado, se busca el envío, si lo encuentra cambia el estado
-    * y si el estado es "Entregado" le indica la fecha de entrega*/
+     * y si el estado es "Entregado" le indica la fecha de entrega*/
     /*Updates the status of the selected shipment, the status is passed by keyboard, the shipment is searched, if it is found, the status changes
      * and if the status is "Delivered" it indicates the delivery date*/
-    public boolean updateShipmentStatus(String newStatus, int idShipment){
+    public boolean updateShipmentStatus(String newStatus, int idShipment) {
         Shipment shipmentStatus;
         shipmentStatus = searchShipmentById(idShipment);
         if (shipmentStatus == null) return false;
         else {
             shipmentStatus.setStatus(newStatus);
-            if (newStatus.equals("Entregado")) shipmentStatus.setDeliveryDate(LocalDate.now());
+            if (newStatus.equals("Entregado")) {
+                shipmentStatus.setDeliveryDate(LocalDate.now());
+                PersistenceDisk.saveDriver(this);
+                PersistenceDisk.recordUpdateShipment(shipmentStatus, LocalDateTime.now());
+            }
             return true;
         }
     }
 
     /*Recorre toda la lista de zonas de entregas y la guarda en una variable String para luego mostrarla por pantalla*/
     /*Go through the entire list of delivery areas and save it in a String variable and then display it on the screen*/
-    public String getDeliveryZoneToString(){
+    public String getDeliveryZoneToString() {
         String results = "";
         if (deliveryZones == null) results = "No hay zonas añadidas";
         else {
-            for (Integer p:
-                 deliveryZones) {
+            for (Integer p :
+                    deliveryZones) {
                 if (p != null) results += p + ", ";
             }
         }
@@ -191,7 +188,7 @@ public class Driver implements Serializable {
         return this.pass.equals(pass);
     }
 
-    public String resumeForAdmin(){
+    public String resumeForAdmin() {
         return "┌──. ■ .─────────────────────────────────────────────────────────┐\n" +
                "                    Informacion del conductor\n" +
                "└─────────────────────────────────────────────────────────. ■ .──┘\n" +
@@ -203,7 +200,7 @@ public class Driver implements Serializable {
                "──────────────────────────────────────────────────────────. ■ .──";
     }
 
-    public String showProfile(){
+    public String showProfile() {
         return "┌──. ■ .─────────────────────────────────────────────────────────┐\n" +
                "                    Informacion del perfil\n" +
                "└─────────────────────────────────────────────────────────. ■ .──┘\n" +
@@ -216,14 +213,23 @@ public class Driver implements Serializable {
     }
 
 
-    public String resumeMock() {
-        return "┌──. ■ .─────────────────────────────────────────────────────────┐\n" +
-               "                    CONDUCTOR DE PRUEBA\n" +
-               "█  Nombre: " + name + "\n" +
-               "█  Email: " + email + "\n" +
-               "█  Contraseña: " + pass + "\n" +
-               "█  Zonas de entrega asignadas: " + (getDeliveryZoneToString().isEmpty() ? "No hay zonas añadidas" : getDeliveryZoneToString()) + "\n" +
-               "█  Paquetes asignados: " + getShipments().size() + "\n" +
-               "──────────────────────────────────────────────────────────. ■ .──";
+    public void changeDeliveryStatus(String newStatus, int id) {
+        for (Shipment s :
+                shipments) {
+            if (s.getId() == id) s.setStatus(newStatus);
+        }
+        PersistenceDisk.saveDriver(this);
+    }
+
+    public void changeDeliveryData(String address, int postalCode, String city, int idShipment) {
+        for (Shipment s :
+                shipments) {
+            if (s.getId() == idShipment) {
+                s.setAlternativeAddress(address);
+                s.setAlternativePostalCode(postalCode);
+                s.setAlternativeCity(city);
+            }
+        }
+        PersistenceDisk.saveDriver(this);
     }
 }

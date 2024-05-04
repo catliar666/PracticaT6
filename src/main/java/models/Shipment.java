@@ -177,7 +177,7 @@ public class Shipment implements Serializable {
         "█ Fecha estimada de entrega: " + dateExpect + "\n" +
         "█ Será entregado en: " + alternativeAddress + " " + alternativeCity + "(" + alternativePostalCode + ")" + "\n" +
         "█ Destinatario: " + nameUserNoRegister + "\n" +
-        "█ Cantidad a pagar: " + cost + "\n" +
+        "█ Cantidad pagada: " + cost + "\n" +
         "───────────────────────────────────────────. ■ .──";
         return resultado;
     }
@@ -205,12 +205,4 @@ public class Shipment implements Serializable {
         return resultado;
     }
 
-
-    public String resumeMock() {
-        return "──. ■ .───────────────────────────────────────────\n" +
-               "          PAQUETE DE PRUEBA\n" +
-               "█ Estado: " + status + "\n" +
-               "█ ID del paquete: " + id + "\n" +
-               "─────────────────────────────────────────. ■ .────\n";
-    }
 }

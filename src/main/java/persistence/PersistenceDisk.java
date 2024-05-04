@@ -9,7 +9,6 @@ import models.User;
 import utils.Utils;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -46,6 +45,18 @@ public class PersistenceDisk {
             throw new RuntimeException(e);
         }
 
+    }
+    public static void recordUpdateShipment(Shipment s, LocalDateTime date) {
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(Config.getPathRegisterLogin(), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("Actualización del envío: " + s.getId() + " \nEstado del envío: " + s.getStatus() + " \nFecha y hora de la actualización: " + Utils.fechaAString(date) + "\n"
+                     + "==============================================================\n");
+            bw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void closeRegister(int id, String nombre, String tipo, LocalDateTime date) {
@@ -114,7 +125,18 @@ public class PersistenceDisk {
     public static void savePackageUnassigned(Shipment s) {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(Config.getPathPackage() + "/" + s.getId() + ".dat");
+            fos = new FileOutputStream(Config.getPathPackageUnassigned() + "/" + s.getId() + ".dat");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(s);
+            oos.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void savePackageNoRegisterUser(Shipment s) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(Config.getPathPackageNoRegisterUser() + "/" + s.getId() + ".dat");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(s);
             oos.close();
@@ -177,15 +199,36 @@ public class PersistenceDisk {
         return users;
     }
 
-    public static ArrayList<Shipment> readPackageDisk() {
-        File f = new File(Config.getPathPackage());
+    public static ArrayList<Shipment> readPackageUnassignedDisk() {
+        File f = new File(Config.getPathPackageUnassigned());
         if (f.list().length == 0) return new ArrayList<>();
         ArrayList<Shipment> shipments = new ArrayList<>();
         String[] ficheros = f.list();
         for (int i = 0; i < ficheros.length; i++) {
             FileInputStream fis;
             try {
-                fis = new FileInputStream(Config.getPathPackage() + "/" + ficheros[i]);
+                fis = new FileInputStream(Config.getPathPackageUnassigned() + "/" + ficheros[i]);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                Shipment temp = (Shipment) ois.readObject();
+                shipments.add(temp);
+                ois.close();
+            } catch (IOException | ClassNotFoundException e) {
+                return null;
+            }
+
+        }
+        return shipments;
+    }
+
+    public static ArrayList<Shipment> readPackageNoRegisterUserDisk() {
+        File f = new File(Config.getPathPackageNoRegisterUser());
+        if (f.list().length == 0) return new ArrayList<>();
+        ArrayList<Shipment> shipments = new ArrayList<>();
+        String[] ficheros = f.list();
+        for (int i = 0; i < ficheros.length; i++) {
+            FileInputStream fis;
+            try {
+                fis = new FileInputStream(Config.getPathPackageNoRegisterUser() + "/" + ficheros[i]);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 Shipment temp = (Shipment) ois.readObject();
                 shipments.add(temp);
@@ -240,15 +283,19 @@ public class PersistenceDisk {
         return admins;
     }
 
-    public static void deletePackage(int idShipment) {
-        File f = new File(Config.getPathPackage());
+    public static void deletePackageUnassigned(int idShipment) {
+        File f = new File(Config.getPathPackageUnassigned());
         String[] ficheros = f.list();
         for (int i = 0; i < ficheros.length; i++) {
-            File delete = new File(Config.getPathPackage() + ficheros[i]);
+            File delete = new File(Config.getPathPackageUnassigned() + ficheros[i]);
             if (delete.equals(idShipment + ".dat")) delete.delete();
         }
     }
 
-//    public static boolean excelDocument(AppController controller) {
-//    }
+    public static void deletePackageToNoRegisterUser(int id) {
+        File f = new File(Config.getPathPackageNoRegisterUser() + "/" + id + ".dat");
+        if (f.exists()) {
+            f.delete();
+        }
+    }
 }
