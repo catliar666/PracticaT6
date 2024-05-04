@@ -1,0 +1,1 @@
+java -jar PracticaT6.jar
