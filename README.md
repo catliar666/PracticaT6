@@ -58,7 +58,7 @@ Para descargar el programa debemos seguir los siguientes pasos:
 
 ###### 1.  Descargar zip
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224164722576855040/image.png?ex=661c7f3d&is=660a0a3d&hm=8e6a8192ffafc750f13a58823357cc2da42bc36cd9fc5f662a1c1339b386a789&)
+![](https://media.discordapp.net/attachments/1163537549126545470/1236463061330690190/image.png?ex=66381976&is=6636c7f6&hm=fc8ab751781355b4c5169aa3a190ea64682a4386d09487ab9815107dc8e69329&=&format=webp&quality=lossless&width=1125&height=662)
 
 ###### 2. Extraer todo
 
