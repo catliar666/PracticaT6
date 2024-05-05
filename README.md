@@ -106,7 +106,7 @@ Si el destinatario es usuario de la app, a la hora de introducir el email nos in
 
 Si por el contrario, el destinatario no está registrado en FernanPaaq, el programa procederá a pedirle toda la información necesaria para crear el envío
 
-![]()
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224129109051838515/image.png?ex=66380d92&is=6636bc12&hm=dd697caf1e21e03911ae4abfdf4944d589fff6ffd6a068e5fa5a26376e67c988&)
 
 Tendremos opcion también ha avisarlo con un email y nos mostrará un resumen de la información del envío y el coste del mismo, el coste se basa en, si hay conductores disponibles para la entrega en la zona indicada, el coste bajará de precio a 3,52€ en cambio si no encuentra nigún conductor para esa zona, el coste ascendera a 10,2€
 
@@ -119,74 +119,74 @@ Si hemos escogido la opción de avisar al usuario mediante un email, le llegará
 ###### 1.1.2 Muestra de información sobre los envíos que me han realizado
 Esta opción hace un pequeño resumen de los envios tanto entregamos como pendientes de entrega, los ordena de más recientes a más antiguos, si el usuario no tiene ningún envío para mostrar el programa lo indicará
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127194729807943/image.png?ex=661c5c4a&is=6609e74a&hm=3e6d254df8f73942dd1487b24cda08dad532b371a55923e4c024fa33504efda7&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127194729807943/image.png?ex=66380bca&is=6636ba4a&hm=7103208588cfea9263b1bafc5119dc8b454051de67cd252aef61c97911d19324&)
 
 Si el usuario tiene envíos registrados el programa se lo mostrará así
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224186618026655864/image.png?ex=661c93a2&is=660a1ea2&hm=d50c6ced06be003b36ec38e1fee6a097e3dd95268238e5b38f2ee54c5ddf5eb8&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224186618026655864/image.png?ex=66379a62&is=663648e2&hm=e5daf77816cf07b63d6e5f3f6d626185b7a362e755da475a5423f548d665c498&)
 
 ###### 1.1.3 Modificar mis datos de entrega para un envío
 Está opción muestra todos los envíos que tiene disponibles el usuario, y que todavia no han sido entregados, al usuario le damos la opción de elegir el envío según el número de referencia y lo dejamos cambiar la dirección de este por una nueva, si la opción no encuentra envios para mostrar aparecerá así.
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127260278390794/image.png?ex=661c5c5a&is=6609e75a&hm=9bebc121e26a95b95249b9e72cab39c4fad859f1e81d52654c461058a71d8827&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127260278390794/image.png?ex=66380bda&is=6636ba5a&hm=179d342ddda1eac67c8f5984796a5a0f6c71f872d37e270716fbad71fae1fbd3&)
 
 En cambio, si el usuario consta de envíos les mostrará todos en orden de más reciente a más antiguo
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224187566702460959/image.png?ex=661c9484&is=660a1f84&hm=148503ca718107ac4ff1e4c610a990d1aa0e2caf32cae7ac65909adb806c581c&)
+![]()
 
 Una vez elegido el envío, procederá a preguntarnos la nueva dirección
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224187862552019005/image.png?ex=661c94ca&is=660a1fca&hm=f2942f5aa48e92538a6f29407c5cc3701af9ddb3c19fa8472388d2fe522daeaa&)
+![]()
 
 Y ya estarían los cambios realizados
 
 ###### 1.1.4 Muestra de información de los envíos que yo he realizado.
 Esta opción nos muestra un resumen de todos los envíos que he realizado, el estado de los mismos, el destinatario y las fechas tanto de expedición como de entrega aproximada
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224188105746288731/image.png?ex=661c9504&is=660a2004&hm=da382b4669c92fdf1f2bc41ace8abc1c8082a730f6b6349b5d7ee26b02bdc119&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224129198340440125/image.png?ex=66380da8&is=6636bc28&hm=b64c09e4f2e18e66830d00f6404a6677c4122041ee6764bf6d019efe96913fb0&)
 
 Si por el contrario el usuario no ha realizado ningún envío, la opción se mostrará así
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127323574501406/image.png?ex=661c5c69&is=6609e769&hm=7f8c59007f4495cbee73be9f12ce88dd03cd68545b8f2d9fbbcdd54d46206f50&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127323574501406/image.png?ex=66380be9&is=6636ba69&hm=c0d17a918917054b8c175cfc6fb8e0fa4efe4dba86969c9fa194dcb846964f6c&)
 
 ###### 1.1.5 Ver mi perfil.
 Esta opción nos hace un breve resumen de nuestra información de perfil
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127381351174255/image.png?ex=661c5c76&is=6609e776&hm=c116eda8491029c8cbfb2266f91bdbf9db62bae02de7ed3c4b8c7baf8b733f73&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127381351174255/image.png?ex=66380bf6&is=6636ba76&hm=f0ff92eb9888e85c3fc37ae3bfb528d2461c1fafcca801d325b8296972ab4a0e&)
 
 ###### 1.1.6 Modificar mis datos.
 Esta opción nos abre un menú y nos indica todas las posibilidades ha cambiar de nuestra cuenta, consta de 7 opciones
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127450443940010/image.png?ex=661c5c87&is=6609e787&hm=a83b826f65c22eee2ceea81055bd4c5841a26496c4e6ba851a28f2c5ccbea138&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127450443940010/image.png?ex=66380c07&is=6636ba87&hm=35c62c46544ac5a2ef0660bee28de98145d810915133caf8aa996fc4c3416e1e&)
 
 - Opción 1: Dirección de entrega
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127575404711977/image.png?ex=661c5ca5&is=6609e7a5&hm=9568b0fd0ba9d325c50fc12f074a024bcfae46abef461917b9c88a08e6133388&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127575404711977/image.png?ex=66380c25&is=6636baa5&hm=a371b1a5509c6cdcded879885ddeb210a7d3adb25e69713f288e3db404f66978&)
 
 - Opción 2: Número de teléfono
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127645227155577/image.png?ex=661c5cb5&is=6609e7b5&hm=7ade938a2e3b2d7ed1f6c64d0d7acbe347c0a5c5fe93b433e1069b49091f2b1b&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127645227155577/image.png?ex=66380c35&is=6636bab5&hm=ca76a9880bbc2bf30c908903a805f2acec5f316e3b12f5b3389f918a5a86672b&)
 
 - Opción 3: Nombre y apellidos
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127711539105842/image.png?ex=661c5cc5&is=6609e7c5&hm=89f3bf36d06e9dd7570f44fe1e0c6f016ddb734ba29f752dd0e31e220cd5c835&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127711539105842/image.png?ex=66380c45&is=6636bac5&hm=e1c2617846568c72b293758738d1dadebe9d06c17e0a406dae6d00a9d01a191d&)
 
 - Opción 4: Contraseña
 
- ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127811099295954/image.png?ex=661c5cdd&is=6609e7dd&hm=ea990edc158e91bbdf51320505d137afd9a6f8a47a3467c3ec18fac32195b4c5&)
+ ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127811099295954/image.png?ex=66380c5d&is=6636badd&hm=8cc04cb923c3cc34cfc698076e20928f5d8c1a16b302a52fe6a0fe5828399018&)
 
 - Opción 5: Activar o desactivar suscripción de notificaciones.
   Las notificaciones en los usuarios por defecto están activadas
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127911108280483/image.png?ex=661c5cf5&is=6609e7f5&hm=37570e0ae61c6b7859b1b72e69181a3c11eef1563cf0bfe75dd956f54e5d9af0&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127911108280483/image.png?ex=66380c75&is=6636baf5&hm=0c1b65f9202e35b26aaf3b7c55665dc47a1ff9c050b6036947264d39fd6a2a65&)
 
 - Opcion 6: Email
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128012665229352/image.png?ex=661c5d0d&is=6609e80d&hm=3c94bf6efaf0708ab6f17df8e0b5f43015cfb090a987200a7af9079407f06119&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128012665229352/image.png?ex=66380c8d&is=6636bb0d&hm=7376bf4cdcf4d949d65e0fdedc8748b433452a6a48cfacea3f3d14120079d57a&)
 
 Ahora comprobamos que todos los cambios realizados anteriormente en las opciones se hayan realizado correctamente
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128219243090021/image.png?ex=661c5d3e&is=6609e83e&hm=22a6fc4b385a7a7ce26d606cdd2a01342b94717cc84b1349bdc0d8646a80b2aa&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128219243090021/image.png?ex=66380cbe&is=6636bb3e&hm=7160f2298f20ed0dcc05c075d042b68ab2e8833dbd4427765f13a746e15f5c3e&)
 
 #### 1.2 Inicio de sesión con usuario conductor
 
