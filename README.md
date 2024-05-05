@@ -62,43 +62,30 @@ Para descargar el programa debemos seguir los siguientes pasos:
 
 ###### 2. Extraer todo
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224164859105513582/image.png?ex=661c7f5e&is=660a0a5e&hm=2e498576cf716eeb55a4c310eb8a55b1a4b517a128cb1aebcf845ff27aeb2923&)
+![](https://media.discordapp.net/attachments/1163537549126545470/1236463662177325187/image.png?ex=66381a05&is=6636c885&hm=c8d74f80a3da4f8afced97cfb884f7b5b1fdd858daaa892be321edb93ffdc61b&=&format=webp&quality=lossless&width=371&height=175)
 
 ###### 3. Ruta
 
-A continuación seguimos la ruta de carpetas hasta llegar al ejecutable PracticaT5-main\PracticaT5-main\out\artifacts\Practica5_jar\Practica5.bat
+A continuación seguimos la ruta de carpetas hasta llegar al ejecutable PracticaT5-main\PracticaT5-main\PracticaT6.bat
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224164916009893919/image.png?ex=661c7f6b&is=660a0a6b&hm=18fc7be3beec7d954e1b160381d8dd445bbe41bd7f3cc1b54076535017ce80f8&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1236463831375675552/image.png?ex=66381a2d&is=6636c8ad&hm=6aa275405ae7fab0327914cb91a910c6b5564531bc83aa07e68673ab66d1a7fe&)
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224164957118267393/image.png?ex=661c7f75&is=660a0a75&hm=5143ebc97467708388e52415b5a16c98f12aa428e9c57a3e92c8f8d68635abe5&)
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224164992677445742/image.png?ex=661c7f7e&is=660a0a7e&hm=90c008609a553ba933ba77cd1a15681b8ab205a3dbf9a367ed710db3a6fc5f15&)
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224165024709480478/image.png?ex=661c7f85&is=660a0a85&hm=ef1dc8cce8bdf5ae04f3c29bc8b656a1240ea3847f98d938c49fb18c9e5614e4&)
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224165061501648917/image.png?ex=661c7f8e&is=660a0a8e&hm=6e9f281ccb1ad348e9a2812457dc788465eb8d3539d1aa77c5858f4b2decdfff&)
 
 ###### 4. Ejecutar el programa
 
 Si a la hora de ejecutar el programa se nos abre una ventana de emergencia indicandonos que impide el inicio de este por protección, simplemente le damos al botón "Ejecutar de todas formas" y ya tendremos listo nuestro programa
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224165121056706650/image.png?ex=661c7f9c&is=660a0a9c&hm=d5eeaabbff02ccd03d1332d6b8f9980ad8c2af20d24e09be25c9bd3da82e0f1a&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224165121056706650/image.png?ex=6637865c&is=663634dc&hm=832e0e9bef4ceff13aa2813788eceb9813b1079e5c90f1d03104ceb37cafe7a7&)
 
 
 ## Funcionamiento
 
 ### Inicio
-Nuestro programa iniciará preguntandonos si queremos que haya información dentro de este, tenemos dos opciones para elegir "Si" o "No" 
-La opción "Si" añadirá información de usuarios, conductores y envíos y nos mostrará la informacion añadida
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224122860612620348/image.png?ex=661c5841&is=6609e341&hm=705ac055f678f3eb2f6089539ae1ddb5d91c97781eaca27aa74039cf33c34f03&)
-
-Mientras que la opción "No" inicia el programa vacío, sin ningún usuario, solamente con el admin por defecto.
 
 ### Menú principal
-Una vez elegida la opción que deseamos, nos aparecerá el menú principal que consta de 3 opciones
+Nada más comenzar nos aparecerá el menú principal que consta de 3 opciones
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224122943399792711/image.png?ex=661c5854&is=6609e354&hm=2a407a75d12ebb2b9690322bbfff73dcecd3aeee5b8e8f949412922abc5d07d8&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224122943399792711/image.png?ex=663807d4&is=6636b654&hm=765a0f44c1109f3e4589fe8124c71ef84281646bb2794433c1453d03d4e03c36&)
 
 #### 1. Login
 Está opción nos deja iniciar sesión con una cuenta ya existente, podemos iniciar de esta forma tanto como un usuario normal, un conductor o un admin, el programa se encargará de comprobar qué tipo de cuenta está iniciando sesión.
@@ -108,26 +95,26 @@ Está opción nos deja iniciar sesión con una cuenta ya existente, podemos inic
 ##### 1.1 Inicio de sesión con usuario normal
 Cuando iniciamos sesión con una cuenta de usuario normal nos aparecerá este menú
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123948783108219/image.png?ex=661c5944&is=6609e444&hm=6ede8b5412a573b002df4bbf6da776382dd37a6c066a0e42ce65c5c46516e960&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123948783108219/image.png?ex=663808c4&is=6636b744&hm=217e0145e7af92b76122d7d9927a947b4236a2ce8959b0afe4dbabecd5db6d49&)
 
 Como vemos consta de una barra de notificacion que nos indica los paquetes que tenemos pendiente de entrega y 7 opciones que veremos en profundidad más adelante
 ###### 1.1.1 Realizar un envío
 Está opción nos permite enviar un paquete a un destinatario, tanto si es usuario de FernanPaaq como si no.
 Si el destinatario es usuario de la app, a la hora de introducir el email nos indicará que lo ha encontrado y el paquete se creará con la información de ese usuario, también nos pedirá si queremos que ese usuario sea avisado de que usted le va a mandar un paquete
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224124073651736627/image.png?ex=661c5962&is=6609e462&hm=6754df34d1d13af9806f6ac32a6ddecf10fe305f583a0b61ddba6ed01ded2e63&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224124073651736627/image.png?ex=663808e2&is=6636b762&hm=6dc270c2a43ed82f7512f4ae747fe33962473003c77c7bb04d1ef284c741a136&)
 
 Si por el contrario, el destinatario no está registrado en FernanPaaq, el programa procederá a pedirle toda la información necesaria para crear el envío
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224129109051838515/image.png?ex=661c5e12&is=6609e912&hm=653e546a51c8d253baae9163cb3c7d4b1d7f2a1676bd0224f142ab3ff111cadf&)
+![]()
 
 Tendremos opcion también ha avisarlo con un email y nos mostrará un resumen de la información del envío y el coste del mismo, el coste se basa en, si hay conductores disponibles para la entrega en la zona indicada, el coste bajará de precio a 3,52€ en cambio si no encuentra nigún conductor para esa zona, el coste ascendera a 10,2€
 
 Si hemos escogido la opción de avisar al usuario mediante un email, le llegará este correo
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128740930359296/Screenshot_20240401_005010_Gmail.jpg?ex=661c5dbb&is=6609e8bb&hm=2d4f7b6e26934dfd8421cc7ba329b725a5d95509a409e462214736500e5f8192&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128740930359296/Screenshot_20240401_005010_Gmail.jpg?ex=66380d3b&is=6636bbbb&hm=626ce90e723d01fa9370f115428e0327e7199661f2cf87b68b2877f58995d572&)
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128748761387150/Screenshot_20240401_005018_Gmail.jpg?ex=661c5dbc&is=6609e8bc&hm=3c3be091a84f33585b17348db3ee251fcd75d6aba0246b3ec7714680928280e8&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128748761387150/Screenshot_20240401_005018_Gmail.jpg?ex=66380d3c&is=6636bbbc&hm=21248120f4bf6ed35fa2c970c50b9caadd4b6956ff317574a439f3b72ab697ee&)
 
 ###### 1.1.2 Muestra de información sobre los envíos que me han realizado
 Esta opción hace un pequeño resumen de los envios tanto entregamos como pendientes de entrega, los ordena de más recientes a más antiguos, si el usuario no tiene ningún envío para mostrar el programa lo indicará
@@ -333,16 +320,16 @@ Nos avisa de que las zonas de entrega debe añadirlas el conductor a mano, ya qu
 
 Esta opción nos dejará registrarnos como un usuario normal, comprobando si el email está introducido, si ya existe un email en las creedenciales de la app está nos indicará que ya está introducido y no nos dejará continuar con la creación de la cuenta, volviendo al menú principal automáticamente
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123211588042842/image.png?ex=661c5894&is=6609e394&hm=02e2d939dbf890da766d45d973b3df9a5f3478ce78b859d6aef09e7c787ce420&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123211588042842/image.png?ex=66380814&is=6636b694&hm=d0372caad0f4513aff89343d7e4f31753e76300ecca2022b23d729e45c45294a&)
 
 En cambio, si el email introducido no consta en los datos de la app, comenzará con la creación de la cuenta pidiendo todos los datos necesarios
 
-![](https://media.discordapp.net/attachments/1163537549126545470/1224123501300940931/image.png?ex=661c58d9&is=6609e3d9&hm=88bcb822046c87901d4809ce632fcb29dd582367ba54688a7ab1036cdeb32924&=&format=webp&quality=lossless)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123332551507968/image.png?ex=66380831&is=6636b6b1&hm=516214e3966d74dace41ad29febcb17e3ff605a6b285aa40463e5cced2c7ff5a&)
 
 Finalizando la creación de la misma dandonos la opción de validar o no la cuenta, según la opción que escoga el usuario, obtendrá una respuesta u otra.
 Si la opción escogida es "Más tarde" la cuenta quedará en modo "Espera de validación"
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224124499658805369/image.png?ex=661c59c7&is=6609e4c7&hm=08760a9995242d986e3626547ec3e25c57a07149c3d82df78c66cfc1752a2d00&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123501300940931/image.png?ex=66380859&is=6636b6d9&hm=942c6fa2a4b304a3432a9c25be65f5be0b92e559d361aaf8a00d16aa088ed716&)
 
 Teniendo que validar la cuenta en el proximo inicio de sesión
 En cambio si la respuesta es "Verificar ahora" se le pedirá el número enviado por correo, una vez introducido la cuenta queda validada para siempre, cualquier cambio en el email o información de la misma no afectará en nada a la validación.
@@ -359,4 +346,4 @@ Una vez introducido el código la cuenta iniciará sesión automáticamente
 
 Esta opción es muy sencilla, nos pedirá el número de seguimiento del envío a buscar y si lo encuentra, nos mostrará una información escasa de este
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123059120898109/image.png?ex=661c5870&is=6609e370&hm=e2af81e9d47c10b641792d1d46fe8c86dd1178a730c92d94a88b8f9975a05c61&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123059120898109/image.png?ex=663807f0&is=6636b670&hm=2f42ae4fe8287982c884495f87832ad5b9727b8ed2c1d9b53ffaeb997e29a597&)
