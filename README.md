@@ -273,41 +273,41 @@ Una vez asignado el envío, se le avisará al conductor mediante telegram
 
 Esta opción hace un resumen de todos los usuarios que se han registrado, enseña toda la información de las cuentas, cuantos envios tienen pendientes de entrega, si ha validado la cuenta, etc...
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134681864306698/image.png?ex=661c6343&is=6609ee43&hm=027f5ef6f8c51b65758a28c2c653ff5c4e1dfff40f8671fe950b087e82766322&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134681864306698/image.png?ex=663a0d03&is=6638bb83&hm=b502faca43777b46f6e5a6e26a93e1e757040c123ae343b0a9cb0c6ff0d60846&)
 
 Una vez que ha mostrado todos los usuarios nos da la opción de buscar uno en concreto y de nos pregunta, de qué manera deseamos buscarlo
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134755205775482/image.png?ex=661c6354&is=6609ee54&hm=f80797ba15d282138998e00f33e10d2d08110f2fcaf04afa17a698385f03fea0&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134755205775482/image.png?ex=663a0d14&is=6638bb94&hm=9124e33ebf11dfc3bc034f751f2c742f2de4e99d0bcb3125a36350d91e2a530c&)
 
 - Opcion 1: Según el ID de un envío
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134990749503528/image.png?ex=661c638d&is=6609ee8d&hm=88e64c82f7f9a7aefdddafdacea5890c24d9ee3a5af476d7cda7dc01bc94da0f&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134990749503528/image.png?ex=663a0d4d&is=6638bbcd&hm=d1ae4c7263911800552e718466bd2dbcf26095b39bbd990aa9ecfa8477f76334&)
 
 - Opcion 2: Email
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135067404599296/image.png?ex=661c639f&is=6609ee9f&hm=a26a638560d9b9ecb09b5fc6907ad2f36c19ded5726fd2ab191fdc755062d09b&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135067404599296/image.png?ex=663a0d5f&is=6638bbdf&hm=6755304795b4d372f2c4ffd0d58dccffa9f9f982e60e2efbe7222f7c3d750f4e&)
 
 - Opcion 3: Número de telefono
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135130600308796/image.png?ex=661c63ae&is=6609eeae&hm=380849e359f78e5ecd20583148436bec5756911af620410282ac3d7ca43c4484&)
+  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135130600308796/image.png?ex=663a0d6e&is=6638bbee&hm=cf3e84dd437b0d94d6cf7c266f17b34f5048aea7bf8a2b14a795db7a55710be2&)
 
 ###### 1.3.4 Ver el resumen de los conductores registrados
 
 Esta opción es muy sencilla, muestra un resumen completo al administrador sobre toda la flota de conductores 
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135229112062013/image.png?ex=661c63c5&is=6609eec5&hm=fef14be2f60fa031427d9907e973482a2bb95ea0f1d7918aba7b55a74da285dd&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135229112062013/image.png?ex=663a0d85&is=6638bc05&hm=65be6e7b02336bbbd8ba5f97be658e33f0155c79d6a91daa03b73e6aa376f033&)
 
 ###### 1.3.5 Ver mi perfil
 
 Muestra un resumen de la cuenta del admin, con toda la información disponble de este
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135311173353483/image.png?ex=661c63d9&is=6609eed9&hm=80d9811a89ff1516dd5527b41f4f81009f694b0a77706773fd65560b78278568&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135311173353483/image.png?ex=663a0d99&is=6638bc19&hm=65fa67ff282e30613fd722ecf6fd587be55fa335e28f20a09bc3d6b1e896ffa0&)
 
 ###### 1.3.6 Modificar mis datos
 
 Al seleccionar esa opción se nos abrirá un menú con 4 opciones, antes vistas tanto en conductor como en usuario normal
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135501485707304/image.png?ex=661c6406&is=6609ef06&hm=24bc501923203e5fd3dc116c99a6a5e2046ceea1ad37d06fb2d8e08dcaf51a5a&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135362427752570/image.png?ex=663a0da5&is=6638bc25&hm=eb09d1a897ce6a151512866a51f9cb5a5ce799348154c634c17e578b8c9ca693&)
 
 ###### 1.3.7 Crear cuenta de conductor
 
