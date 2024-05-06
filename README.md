@@ -345,7 +345,9 @@ Esta opción te creará un excel con toda la información de todos los envíos q
 
 ![](https://cdn.discordapp.com/attachments/1163537549126545470/1237067763571494962/image.png?ex=663a4ca2&is=6638fb22&hm=2f2463d327ce8b9faace593cd858a8e98c12aa9050be052b8aeb78189213f29b&)
 
-![]()
+Aquí muestro el excel que se crea y se envia por correo con los paquetes por defecto que contiene el programa.
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237070169835180174/image.png?ex=663a4ee0&is=6638fd60&hm=2748c0c4abc913a8ec7ca5730797558c73352d3f0a583999d65d7f961fcb8632&)
 
 ###### 1.3.11 Realizar una copia de seguridad de la aplicación
 
