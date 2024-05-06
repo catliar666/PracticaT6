@@ -248,7 +248,7 @@ El menú de un administrador debe de ser lo más detallado posible, por lo tanto
 
 **Para iniciar sesión, será con las creedenciales email: myprettyface11@gmail.com, contraseña: 123pipo***
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134525689397348/image.png?ex=663a0cde&is=6638bb5e&hm=b865190c752cea6c695e7f7180a106061392b6e80f7e315f05b0c12b10ef599f&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237063576347480215/image.png?ex=663a48bc&is=6638f73c&hm=bfb8aa4c60cb31174be4bffb875d94fc3561f3af8ba091559d22bc5c66e622ad&)
 
 ###### 1.3.1 Ver los envíos sin asignar
 
@@ -260,9 +260,9 @@ Esta opción hace un resumen de todos los envios sin asignar, está ordenado des
 
 Primero muestra todos los envíos que quedan por asignar, se deberá seleccionar el envío según el número de referencia indicado, una vez seleccionado, aparecerán los conductores, el admin podrá escoger el que más guste, según sus zonas de entrega y automáticamente el envío será asignado al conductor
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224194046621253643/image.png?ex=661c9a8d&is=660a258d&hm=420788ae5eccdfd3886b5bb8fa6e198d09146f0bb5e26f06d393dee7103cd4f1&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134460610445382/image.png?ex=663a0cce&is=6638bb4e&hm=315a79c9ac4a9bff93444e324c721fecbffa1b21856ab9922856e84f170499ea&)
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224194166548860938/image.png?ex=661c9aa9&is=660a25a9&hm=f6436bfceffe8c37677e85e8e28fb430436926c9872609f045312605b179d1dc&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224146591112495234/image0.jpg?ex=663a181a&is=6638c69a&hm=2caa481b0cab13961ff89721f39426ef17ff4bd007575c8bc95d01a45a967080&)
 
 Una vez asignado el envío, se le avisará al conductor mediante telegram
 
@@ -313,17 +313,53 @@ Al seleccionar esa opción se nos abrirá un menú con 4 opciones, antes vistas 
 
 Esta opción es fácil y sencilla, permite añadir un trabajador con sus datos, da de alta la cuenta solo pidiendo el email, nombre y contraseña
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135698580377730/image.png?ex=661c6435&is=6609ef35&hm=af1e279fdb5802c0317def94a856ad627ce5361b2bcdb84710c7ec9c628447dd&)
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135698580377730/image.png?ex=663a0df5&is=6638bc75&hm=aec1f7155ce523aa14b903cc0fade11fd458c1b9b101e7d5b3e8f8c4e99f8508&)
 
 Nos avisa de que las zonas de entrega debe añadirlas el conductor a mano, ya que, cada conductor sabe por cuales zonas será mejor para sus rutas
 
 ###### 1.3.8 Crear nueva cuenta de Administrador
+Esta opción, es igual a la de crear cuenta de conductor, permite añadir a un administrador con sus datos, tan solo con el email, nombre y la contraseña de la cuenta.
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237064279337734185/image.png?ex=663a4963&is=6638f7e3&hm=f9ea6a15d096c44dee5ac552ac1b17ab373b21d9bc06a75b9ab48e2134270b29&)
+
+Una vez creada la cuenta, podrá acceder como administrador y ejecutar los mismos apartados.
 
 ###### 1.3.9 Muestra la configuración de nuestro programa
+Debido a que, nuestro programa tiene implementación de persistencia en disco, esta opción nos mostrará la informacion del fichero "properties" aportandole al administrador, toda la información, tanto de donde se guarda la información de nuestro programa, como del modo invitado.
+
+Como veis aquí, se nos muesta el último inicio de sesión de cada usuario, que se identifican con su id y todas las rutas de acceso a las carpetas que contienen la información del programa
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237064911520268369/image.png?ex=663a49fa&is=6638f87a&hm=6063206e5ce54761bb4ecb592516249be2880ebfc36ec1057de8ca9387b06e1b&)
+
+También en esta opción tenemos la opción de cambiar el funcionamiento de nuestro programa, si deseamos activar el "Modo invitado" podremos hacerlo desde aquí, o accediendo a la ruta que nos especifica en el programa
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237066257270833192/image.png?ex=663a4b3b&is=6638f9bb&hm=bf2d74aa4de06c50bf4c08a32baba910ddda7df2164db2602ddac36315a5931b&)
+
+Una vez modificado, nuestro programa pasará a verse así, solo nos dejará acceder para hacer un seguimiento de paquete.
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237066540617175186/image.png?ex=663a4b7e&is=6638f9fe&hm=1ccfff800434816f6c261a30731a724375c831800c1a02c5768f5d2fe30caf29&)
 
 ###### 1.3.10 Enviar listado de envíos por correo
 
+Esta opción te creará un excel con toda la información de todos los envíos que han sido creados y enviará un correo al administrador que haya solicitado la operación
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237067763571494962/image.png?ex=663a4ca2&is=6638fb22&hm=2f2463d327ce8b9faace593cd858a8e98c12aa9050be052b8aeb78189213f29b&)
+
+![]()
+
 ###### 1.3.11 Realizar una copia de seguridad de la aplicación
+
+Está opción te dejará crear una copia de seguridad del programa, te dará dos opciones, tanto una ruta predeterminada como una que nosotros le asignemos, si elegimos la opción de asignarla nosotros, nos dará asistencia sobre como escribir la ruta
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237068023047917659/image.png?ex=663a4ce0&is=6638fb60&hm=a74cd9be87c3f16cce75eca293312f391fd352368e96f186cd16bbf886499d4b&)
+
+Como veis, en la segunda opción, nos da un poco de asistencia sobre como escribir la ruta
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237068584820277338/image.png?ex=663a4d66&is=6638fbe6&hm=dfb6ef91b008aa82af2294dc3a452612dbd778205d290aaa1485cbb2f513fec2&)
+
+Le indicamos una ruta, y el archivo estará creado en la carpeta copy 
+
+![](https://cdn.discordapp.com/attachments/1163537549126545470/1237068803280470016/image.png?ex=663a4d9a&is=6638fc1a&hm=f2fa8ff3fb4323e0caef4c15f0a0aff7dcc93d852b85e62316570cb132bec7e9&)
 
 ### 2. Registro
 
