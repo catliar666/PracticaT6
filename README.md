@@ -270,7 +270,7 @@ Una vez que ha mostrado todos los usuarios nos da la opción de buscar uno en co
 
 - Opcion 2: Email
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135067404599296/image.png?ex=663a0d5f&is=6638bbdf&hm=6755304795b4d372f2c4ffd0d58dccffa9f9f982e60e2efbe7222f7c3d750f4e&)
+  ![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion2-submenu2.png)
 
 - Opcion 3: Número de telefono
 
