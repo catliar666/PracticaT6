@@ -1,6 +1,6 @@
 # Practica Tema 6
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224170600445120683/FernanPaaq.png?ex=66378b77&is=663639f7&hm=ff5df9279a4e128d64f12120dcf8324709af082d044971b42b9840413097b8d3&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/93163db5-6703-4651-bc55-9f167542918f.jpeg)
 
 # Índice
  - **Presentación**
@@ -86,12 +86,12 @@ Si a la hora de ejecutar el programa se nos abre una ventana de emergencia indic
 ### Menú principal
 Nada más comenzar nos aparecerá el menú principal que consta de 3 opciones
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224122943399792711/image.png?ex=663807d4&is=6636b654&hm=765a0f44c1109f3e4589fe8124c71ef84281646bb2794433c1453d03d4e03c36&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/Men%C3%BA%20principal.png)
 
 #### 1. Login
 Está opción nos deja iniciar sesión con una cuenta ya existente, podemos iniciar de esta forma tanto como un usuario normal, un conductor o un admin, el programa se encargará de comprobar qué tipo de cuenta está iniciando sesión.
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224180447236460634/image.png?ex=661c8de2&is=660a18e2&hm=70be34d72b6ef3a1f27c10e54e78e38182cf2a84c40bfd77926892a54068341a&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuPrincipal-opcion1.png)
 
 ##### 1.1 Inicio de sesión con usuario normal
 Cuando iniciamos sesión con una cuenta de usuario normal nos aparecerá este menú
@@ -107,7 +107,7 @@ Si el destinatario es usuario de la app, a la hora de introducir el email nos in
 
 Si por el contrario, el destinatario no está registrado en FernanPaaq, el programa procederá a pedirle toda la información necesaria para crear el envío
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224129109051838515/image.png?ex=66380d92&is=6636bc12&hm=dd697caf1e21e03911ae4abfdf4944d589fff6ffd6a068e5fa5a26376e67c988&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuUsuario-opcion1-alternativa.png)
 
 Tendremos opcion también ha avisarlo con un email y nos mostrará un resumen de la información del envío y el coste del mismo, el coste se basa en, si hay conductores disponibles para la entrega en la zona indicada, el coste bajará de precio a 3,52€ en cambio si no encuentra nigún conductor para esa zona, el coste ascendera a 10,2€
 
@@ -127,33 +127,20 @@ Si el usuario tiene envíos registrados el programa se lo mostrará así
 ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224186618026655864/image.png?ex=66379a62&is=663648e2&hm=e5daf77816cf07b63d6e5f3f6d626185b7a362e755da475a5423f548d665c498&)
 
 ###### 1.1.3 Modificar mis datos de entrega para un envío
-Está opción muestra todos los envíos que tiene disponibles el usuario, y que todavia no han sido entregados, al usuario le damos la opción de elegir el envío según el número de referencia y lo dejamos cambiar la dirección de este por una nueva, si la opción no encuentra envios para mostrar aparecerá así.
+Está opción muestra todos los envíos que tiene disponibles el usuario, y que todavia no han sido entregados, al usuario le damos la opción de elegir el envío según el número de referencia y lo dejamos cambiar la dirección de este por una nueva, si la opción no encuentra envios lo informará, en cambio, si tiene envíos, le dejará elegir entre uno de ellos, mostrandoselos desde el más reciente creado al más antiguo.
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127260278390794/image.png?ex=66380bda&is=6636ba5a&hm=179d342ddda1eac67c8f5984796a5a0f6c71f872d37e270716fbad71fae1fbd3&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuUsuario-opcion3.png)
 
-En cambio, si el usuario consta de envíos les mostrará todos en orden de más reciente a más antiguo
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224187566702460959/image.png?ex=66399584&is=66384404&hm=5944e23437b5c34e45908aaa81e23ea1f2010d23c3283117c33fc8ad0cbaab15&)
-
-Una vez elegido el envío, procederá a preguntarnos la nueva dirección
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224187862552019005/image.png?ex=663995ca&is=6638444a&hm=55134403a3f922259945947ace62f24082af3372249f4e0f3bbf90626c68292a&)
-
-Y ya estarían los cambios realizados
 
 ###### 1.1.4 Muestra de información de los envíos que yo he realizado.
 Esta opción nos muestra un resumen de todos los envíos que he realizado, el estado de los mismos, el destinatario y las fechas tanto de expedición como de entrega aproximada
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224129198340440125/image.png?ex=66380da8&is=6636bc28&hm=b64c09e4f2e18e66830d00f6404a6677c4122041ee6764bf6d019efe96913fb0&)
-
-Si por el contrario el usuario no ha realizado ningún envío, la opción se mostrará así
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127323574501406/image.png?ex=66380be9&is=6636ba69&hm=c0d17a918917054b8c175cfc6fb8e0fa4efe4dba86969c9fa194dcb846964f6c&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuUsuario-opcion4.png)
 
 ###### 1.1.5 Ver mi perfil.
 Esta opción nos hace un breve resumen de nuestra información de perfil
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127381351174255/image.png?ex=66380bf6&is=6636ba76&hm=f0ff92eb9888e85c3fc37ae3bfb528d2461c1fafcca801d325b8296972ab4a0e&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuUsuario-opcion5.png)
 
 ###### 1.1.6 Modificar mis datos.
 Esta opción nos abre un menú y nos indica todas las posibilidades ha cambiar de nuestra cuenta, consta de 7 opciones
@@ -199,7 +186,7 @@ Al iniciar sesión con una cuenta de conductor el menú cambia y las opciones ta
 
 Hace un breve resumen de los envios asignados al conductor y que, todavia no ha entregado
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135850766373004/image.png?ex=663a0e1a&is=6638bc9a&hm=8f9f409e5c169714822653615d27d059054bd447f784bead2ae0be73f6ec08df&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuConductor-opcion1.png)
 
 ###### 1.2.2 Cambia el estado de un envío
 
@@ -254,30 +241,28 @@ El menú de un administrador debe de ser lo más detallado posible, por lo tanto
 
 Esta opción hace un resumen de todos los envios sin asignar, está ordenado desde el más antiguo hasta el más reciente, para que así el administrador vaya viendo qué envío tiene más urgencia de entrega
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134601619017849/image.png?ex=663a0cf0&is=6638bb70&hm=79dc34f2032bc8765bdf72be22684e9d16e36cc41f79bc4dbef663a3a99a4d1d&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion1.png)
 
 ###### 1.3.2 Asignar un envío a un conductor
 
 Primero muestra todos los envíos que quedan por asignar, se deberá seleccionar el envío según el número de referencia indicado, una vez seleccionado, aparecerán los conductores, el admin podrá escoger el que más guste, según sus zonas de entrega y automáticamente el envío será asignado al conductor
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134460610445382/image.png?ex=663a0cce&is=6638bb4e&hm=315a79c9ac4a9bff93444e324c721fecbffa1b21856ab9922856e84f170499ea&)
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224146591112495234/image0.jpg?ex=663a181a&is=6638c69a&hm=2caa481b0cab13961ff89721f39426ef17ff4bd007575c8bc95d01a45a967080&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion2.png)
 
 Una vez asignado el envío, se le avisará al conductor mediante telegram
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224146591112495234/image0.jpg?ex=661c6e5a&is=6609f95a&hm=d9776c03afa44aee4ef32807d3a3562d442970cfcb0e7d55c60c0c06aa9d6fed&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/telegram.png)
 
 
 ###### 1.3.3 Ver un resumen de los usuarios registrados
 
 Esta opción hace un resumen de todos los usuarios que se han registrado, enseña toda la información de las cuentas, cuantos envios tienen pendientes de entrega, si ha validado la cuenta, etc...
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134681864306698/image.png?ex=663a0d03&is=6638bb83&hm=b502faca43777b46f6e5a6e26a93e1e757040c123ae343b0a9cb0c6ff0d60846&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion3.png)
 
 Una vez que ha mostrado todos los usuarios nos da la opción de buscar uno en concreto y de nos pregunta, de qué manera deseamos buscarlo
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224134755205775482/image.png?ex=663a0d14&is=6638bb94&hm=9124e33ebf11dfc3bc034f751f2c742f2de4e99d0bcb3125a36350d91e2a530c&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion3-submenu.png)
 
 - Opcion 1: Según el ID de un envío
 
@@ -295,32 +280,32 @@ Una vez que ha mostrado todos los usuarios nos da la opción de buscar uno en co
 
 Esta opción es muy sencilla, muestra un resumen completo al administrador sobre toda la flota de conductores 
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135229112062013/image.png?ex=663a0d85&is=6638bc05&hm=65be6e7b02336bbbd8ba5f97be658e33f0155c79d6a91daa03b73e6aa376f033&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion4.png)
 
 ###### 1.3.5 Ver mi perfil
 
 Muestra un resumen de la cuenta del admin, con toda la información disponble de este
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135311173353483/image.png?ex=663a0d99&is=6638bc19&hm=65fa67ff282e30613fd722ecf6fd587be55fa335e28f20a09bc3d6b1e896ffa0&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion5.png)
 
 ###### 1.3.6 Modificar mis datos
 
 Al seleccionar esa opción se nos abrirá un menú con 4 opciones, antes vistas tanto en conductor como en usuario normal
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135362427752570/image.png?ex=663a0da5&is=6638bc25&hm=eb09d1a897ce6a151512866a51f9cb5a5ce799348154c634c17e578b8c9ca693&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion6.png)
 
 ###### 1.3.7 Crear cuenta de conductor
 
 Esta opción es fácil y sencilla, permite añadir un trabajador con sus datos, da de alta la cuenta solo pidiendo el email, nombre y contraseña
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224135698580377730/image.png?ex=663a0df5&is=6638bc75&hm=aec1f7155ce523aa14b903cc0fade11fd458c1b9b101e7d5b3e8f8c4e99f8508&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion7.png)
 
 Nos avisa de que las zonas de entrega debe añadirlas el conductor a mano, ya que, cada conductor sabe por cuales zonas será mejor para sus rutas
 
 ###### 1.3.8 Crear nueva cuenta de Administrador
 Esta opción, es igual a la de crear cuenta de conductor, permite añadir a un administrador con sus datos, tan solo con el email, nombre y la contraseña de la cuenta.
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237064279337734185/image.png?ex=663a4963&is=6638f7e3&hm=f9ea6a15d096c44dee5ac552ac1b17ab373b21d9bc06a75b9ab48e2134270b29&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion8.png)
 
 Una vez creada la cuenta, podrá acceder como administrador y ejecutar los mismos apartados.
 
@@ -329,35 +314,35 @@ Debido a que, nuestro programa tiene implementación de persistencia en disco, e
 
 Como veis aquí, se nos muesta el último inicio de sesión de cada usuario, que se identifican con su id y todas las rutas de acceso a las carpetas que contienen la información del programa
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237064911520268369/image.png?ex=663a49fa&is=6638f87a&hm=6063206e5ce54761bb4ecb592516249be2880ebfc36ec1057de8ca9387b06e1b&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion9.png)
 
 También en esta opción tenemos la opción de cambiar el funcionamiento de nuestro programa, si deseamos activar el "Modo invitado" podremos hacerlo desde aquí, o accediendo a la ruta que nos especifica en el programa
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237066257270833192/image.png?ex=663a4b3b&is=6638f9bb&hm=bf2d74aa4de06c50bf4c08a32baba910ddda7df2164db2602ddac36315a5931b&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion9-submenu2.png)
 
 Una vez modificado, nuestro programa pasará a verse así, solo nos dejará acceder para hacer un seguimiento de paquete.
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237066540617175186/image.png?ex=663a4b7e&is=6638f9fe&hm=1ccfff800434816f6c261a30731a724375c831800c1a02c5768f5d2fe30caf29&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuPrincipal-invitado.png)
 
 ###### 1.3.10 Enviar listado de envíos por correo
 
 Esta opción te creará un excel con toda la información de todos los envíos que han sido creados y enviará un correo al administrador que haya solicitado la operación
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237067763571494962/image.png?ex=663a4ca2&is=6638fb22&hm=2f2463d327ce8b9faace593cd858a8e98c12aa9050be052b8aeb78189213f29b&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion10.png)
 
 Aquí muestro el excel que se crea y se envia por correo con los paquetes por defecto que contiene el programa.
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237070169835180174/image.png?ex=663a4ee0&is=6638fd60&hm=2748c0c4abc913a8ec7ca5730797558c73352d3f0a583999d65d7f961fcb8632&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion10-exxcel.png)
 
 ###### 1.3.11 Realizar una copia de seguridad de la aplicación
 
 Está opción te dejará crear una copia de seguridad del programa, te dará dos opciones, tanto una ruta predeterminada como una que nosotros le asignemos, si elegimos la opción de asignarla nosotros, nos dará asistencia sobre como escribir la ruta
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237068023047917659/image.png?ex=663a4ce0&is=6638fb60&hm=a74cd9be87c3f16cce75eca293312f391fd352368e96f186cd16bbf886499d4b&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion11.png)
 
 Como veis, en la segunda opción, nos da un poco de asistencia sobre como escribir la ruta
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1237068584820277338/image.png?ex=663a4d66&is=6638fbe6&hm=dfb6ef91b008aa82af2294dc3a452612dbd778205d290aaa1485cbb2f513fec2&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuAdmin-opcion11-2.png)
 
 Le indicamos una ruta, y el archivo estará creado en la carpeta copy 
 
