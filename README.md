@@ -153,7 +153,7 @@ Esta opción nos abre un menú y nos indica todas las posibilidades ha cambiar d
 
 - Opción 2: Número de teléfono
 
-  ![](https://cdn.discordapp.com/attachments/1163537549126545470/1224127645227155577/image.png?ex=66380c35&is=6636bab5&hm=ca76a9880bbc2bf30c908903a805f2acec5f316e3b12f5b3389f918a5a86672b&)
+  ![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuUsuario-opcion6-submenu2.png)
 
 - Opción 3: Nombre y apellidos
 
@@ -174,7 +174,7 @@ Esta opción nos abre un menú y nos indica todas las posibilidades ha cambiar d
 
 Ahora comprobamos que todos los cambios realizados anteriormente en las opciones se hayan realizado correctamente
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224128219243090021/image.png?ex=66380cbe&is=6636bb3e&hm=7160f2298f20ed0dcc05c075d042b68ab2e8833dbd4427765f13a746e15f5c3e&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/menuUsuario-opcion5.png)
 
 #### 1.2 Inicio de sesión con usuario conductor
 
@@ -366,13 +366,11 @@ Si la opción escogida es "Más tarde" la cuenta quedará en modo "Espera de val
 Teniendo que validar la cuenta en el proximo inicio de sesión
 En cambio si la respuesta es "Verificar ahora" se le pedirá el número enviado por correo, una vez introducido la cuenta queda validada para siempre, cualquier cambio en el email o información de la misma no afectará en nada a la validación.
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123590157402334/image.png?ex=661c58ef&is=6609e3ef&hm=3184d46fd1aa6077ccc6992fa89f7a7bfc34222e87dc42a61795bfc4eb4e4fc8&)
-
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123819908796616/image.png?ex=661c5925&is=6609e425&hm=cbde854c7c1126a96c4a2d4b038388f22d99e422cce63222ce35d31891a01919&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/verificarAhora.png)
 
 Una vez introducido el código la cuenta iniciará sesión automáticamente
 
-![](https://cdn.discordapp.com/attachments/1163537549126545470/1224123948783108219/image.png?ex=661c5944&is=6609e444&hm=6ede8b5412a573b002df4bbf6da776382dd37a6c066a0e42ce65c5c46516e960&)
+![](https://github.com/catliar666/fotosReadmePracticas/blob/main/correoValidacion.png)
 
 ### 3. Seguimiento de un envío con el número de referencia
 
